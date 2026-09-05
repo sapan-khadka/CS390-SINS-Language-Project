@@ -1,16 +1,14 @@
 # SINS Control Structures 
 
-## Print Statements \-
+## Print Statements -
 
 SINS supports print statements, like most coding languages do. To use a print statement, simply type print followed by parentheses and put what you want to print into the parentheses, then add a semicolon to end the line.
-
-## 
 
 Example: 
 
 Input-
 
-let x \= 4;
+let x = 4;
 
 print(x);
 
@@ -36,11 +34,11 @@ SINS supports the If/Else conditional statement. It allows the program to make d
 
 Example:
 
-Input \-
+Input -
 
-let x \= 4;
+let x = 4;
 
-if (x \== 4\) {  
+if (x == 4) {  
 	print('Hello World');  
 } else{  
 	print('Goodbye World');  
@@ -58,11 +56,11 @@ Example:
 
 Input- 
 
-let x \= 5;
+let x = 5;
 
-while (x \<= 10\) {  
+while (x <= 10) {  
 	print(x);  
-	x \= x \+ 1;  
+	x = x + 1;  
 }
 
 Output-   
@@ -81,10 +79,10 @@ Example:
 
 Input-
 
-let x \= 500;
+let x = 500;
 
-if ( x \== 500\) {  
-	let y \= 300;  
+if ( x == 500) {  
+	let y = 300;  
 	print(y);  
 }
 
@@ -99,14 +97,14 @@ So in the created if statement, there is a y. That y can't be used outside of th
 
 ## Additional Feature: A Program End Statement
 
-The additional feature added to SINS will be a statement that ends the program, whether or not it has reached the end. The end statement can be used inside other control structures, such as if/else statements or while loops. When a program reaches the end; , then that's a wrap on the program because it just stops wherever the end statement is in the program. 
+The additional feature added to SINS will be a statement that ends the program, whether or not it has reached the end. The end statement can be used inside other control structures, such as if/else statements or while loops. When a program reaches the end;  then that's a wrap on the program because it just stops wherever the end statement is in the program. 
 
 Example: 
 
 Input-  
-let x \= 1000;
+let x = 1000;
 
-if ( x  \==  100\) {  
+if ( x  ==  100) {  
 	print( ' x is 100 ');  
 } else  {   
 print( ' x is not equal to 100 ' )  
@@ -119,20 +117,20 @@ Output-
 
 x is not equal to 100
 
-## Sample Program 2: if/ else statement
+## Sample Program 2: if/ else statement inside while loop
 
 Input-
 
-let x \= 5;
+let x = 5;
 
-while (x  \<=  10\) {  
-	if ( x  \==  7\)  {  
+while (x  <=  10) {  
+	if ( x  ==  7)  {  
 		print ( ' this number is seven ' );  
 } else {  
 			print (x);  
 		}
 
-x \= x \+ 1;
+x = x + 1;
 
 }
 
