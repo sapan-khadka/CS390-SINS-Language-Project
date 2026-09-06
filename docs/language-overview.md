@@ -13,6 +13,11 @@ The proposed keywords for SINS are:
 - `while` - begins a loop
 - `func` - defines a function
 - `return` - returns a value from a function
+- `end` - immediately terminates the program, optionally with an integer exit code
+
+## Supported Values
+
+SINS supports numeric values, including negative numbers, and string values enclosed in single quotation marks.
 
 ## Operators
 
@@ -42,3 +47,4 @@ The proposed keywords for SINS are:
 - `{` and `}` - enclose blocks of statements
 - `;` - ends a statement
 - `,` - separates parameters and arguments
+- `'` and `'` - enclose string values
