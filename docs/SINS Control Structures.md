@@ -118,7 +118,9 @@ So in the created if statement, there is a y. That y can't be used outside of th
 
 ## Additional Feature: A Program End Statement
 
-The additional feature added to SINS will be a statement that ends the program, whether or not it has reached the end. The `end` statement can be used inside other control structures, such as if/else statements or while loops. The `end` statement is a reserved SINS keyword. When a program reaches the `end;` statement, the program immediately stops wherever the statement is located.
+The additional feature added to SINS will be a statement that ends the program, whether or not it has reached the end. The `end` statement can be used inside other control structures, such as if/else statements or while loops. The `end` statement is a reserved SINS keyword. When a program reaches an `end` statement, the program immediately stops wherever the statement is located.
+
+The `end;` statement immediately ends the program with an exit code of `0`, which indicates successful completion. The `end(1);` statement immediately ends the program with the specified integer exit code. A nonzero exit code can indicate an error to Bash, Command Prompt, or PowerShell.
 
 Example:
 
@@ -131,7 +133,7 @@ if (x == 100) {
     print('x is 100');
 } else {
     print('x is not equal to 100');
-    end;
+    end(1);
 }
 
 print('This wont print because of the end statement');
@@ -141,6 +143,27 @@ Output-
 
 ```text
 x is not equal to 100
+```
+
+Another example:
+
+Input-
+
+```sins
+let x = -5;
+
+if (x < 0) {
+    print('Invalid value');
+    end(1);
+}
+
+end;
+```
+
+Output-
+
+```text
+Invalid value
 ```
 
 ## Sample Program 2: if/else statement inside while loop
