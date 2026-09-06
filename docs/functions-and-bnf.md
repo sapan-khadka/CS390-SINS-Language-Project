@@ -90,13 +90,86 @@ This is the BNF of SINS, which defines how the syntax works.
 <statement-list> ::= <statement>
 		| <statement> <statement-list>
 <statement> ::= <assignment>
+		| <reassignment>
 		| <print-statement>
 		| <if-statement>
 		| <while-statement>
 		| <function-definition>
+		| <function>
 		| <end-statement>
 <assignment> ::= "let" <identifier> "=" <expression> ";"
+		| "let" <identifier> "=" <string> ";"
 		| "let" <identifier> ";"
+<reassignment> ::= <identifier> "=" <expression> ";"
+		| "let" <identifier> "=" <string> ";"
+<string> ::= "'" <characters> "'"
+<characters> ::= <char> <characters> 
+		| ""
+<char> ::= <lowercase> 
+		| <uppercase> 
+		| <digit>
+<lowercase> ::= "a" 
+		| "b" 
+		| "c" 
+		| "d" 
+		| "e" 
+		| "f" 
+		| "g" 
+		| "h" 
+		| "i" 
+		| "j"
+              	| "k" 
+		| "l" 
+		| "m" 
+		| "n" 
+		| "o" 
+		| "p" 
+		| "q" 
+		| "r" 
+		| "s" 
+		| "t"
+              	| "u" 
+		| "v" 
+		| "w" 
+		| "x" 
+		| "y" 
+		| "z"
+<uppercase> ::= "A" 
+		| "B" 
+		| "C" 
+		| "D" 
+		| "E" 
+		| "F" 
+		| "G" 
+		| "H" 
+		| "I" 
+		| "J"
+              	| "K" 
+		| "L" 
+		| "M" 
+		| "N" 
+		| "O" 
+		| "P" 
+		| "Q" 
+		| "R" 
+		| "S" 
+		| "T"
+              	| "U" 
+		| "V" 
+		| "W" 
+		| "X" 
+		| "Y" 
+		| "Z"
+<digit> ::= "0" 
+		| "1" 
+		| "2" 
+		| "3" 
+		| "4" 
+		| "5" 
+		| "6" 
+		| "7" 
+		| "8" 
+		| "9"
 <expression> ::= <term> "+" <expression> 
 		| <term> "-" <expression>
 		| <term>
@@ -106,7 +179,8 @@ This is the BNF of SINS, which defines how the syntax works.
 <factor> ::= "(" <expression> ")" 
 		| <constant>
 <constant> ::= number
-<print-statement> ::= "print" "(" [<expression>] ")"
+<print-statement> ::= "print" "(" [<expression>] ")" ";"
+		| "print" "(" [<string>] ")" ";"
 <body-block> ::= "{" <statement-list> "}"
 <comparison> ::= <expression> <comparison-symbol> <expression>
 <comparison-symbol> ::= "<" 
@@ -124,6 +198,7 @@ This is the BNF of SINS, which defines how the syntax works.
 <parameter-list> ::= <identifier> "," <parameter-list>
 		| <identifier>
 <function-definition> ::= <function-definition> ::= "func" <identifier> "(" [<parameter-list>] ")" <function-body>
+<function> ::= <identifier> "(" [expression] ")" ";"
 <end-statement> ::= "end" ";"
-		| "end" "(" number ")"
+		| "end" "(" <expression> ")" ";"
 ```
