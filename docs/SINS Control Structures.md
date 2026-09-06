@@ -90,7 +90,7 @@ Output-
 
 ## Variable Scope
 
-SINS uses something called Variable Scope to figure out where a variable can be used in a SINS program. The variable can be used within the block in which it is created. Say the variable is created inside an if statement; that means the variable can only be used inside that if statement; it doesn't work outside its block.
+SINS uses something called Variable Scope to figure out where a variable can be used in a SINS program. The variable can be used within the block in which it is created. If the variable is created inside an if statement, that means the variable can only be used inside that if statement; it doesn't work outside its block.
 
 Example:
 
