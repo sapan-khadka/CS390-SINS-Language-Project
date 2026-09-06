@@ -108,6 +108,7 @@ This is the BNF of SINS, which defines how the syntax works.
 <char> ::= <lowercase> 
 		| <uppercase> 
 		| <digit>
+		| <symbol>
 <lowercase> ::= "a" 
 		| "b" 
 		| "c" 
@@ -118,7 +119,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "h" 
 		| "i" 
 		| "j"
-		| "k" 
+              	| "k" 
 		| "l" 
 		| "m" 
 		| "n" 
@@ -128,7 +129,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "r" 
 		| "s" 
 		| "t"
-		| "u" 
+              	| "u" 
 		| "v" 
 		| "w" 
 		| "x" 
@@ -144,7 +145,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "H" 
 		| "I" 
 		| "J"
-		| "K" 
+              	| "K" 
 		| "L" 
 		| "M" 
 		| "N" 
@@ -154,7 +155,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "R" 
 		| "S" 
 		| "T"
-		| "U" 
+              	| "U" 
 		| "V" 
 		| "W" 
 		| "X" 
@@ -170,6 +171,36 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "7" 
 		| "8" 
 		| "9"
+<symbol> ::= "!" 
+           	| "#" 
+           	| "$" 
+           	| "%" 
+           	| "&" 
+           	| "(" 
+           	| ")" 
+           	| "*" 
+           	| "+" 
+           	| "," 
+           	| "-" 
+           	| "." 
+           	| "/" 
+           	| ":" 
+           	| ";" 
+           	| "<" 
+           	| "=" 
+           	| ">" 
+           	| "?" 
+           	| "@" 
+           	| "[" 
+           	| "\" 
+           	| "]" 
+           	| "^" 
+           	| "_" 
+           	| "`" 
+           	| "{" 
+           	| "|" 
+           	| "}" 
+           	| "~"
 <expression> ::= <term> "+" <expression> 
 		| <term> "-" <expression>
 		| <term>
@@ -181,6 +212,7 @@ This is the BNF of SINS, which defines how the syntax works.
 <constant> ::= number
 <print-statement> ::= "print" "(" [<expression>] ")" ";"
 		| "print" "(" [<string>] ")" ";"
+		| "print" "(" [<function>] ")" ";"
 <body-block> ::= "{" <statement-list> "}"
 <comparison> ::= <expression> <comparison-symbol> <expression>
 <comparison-symbol> ::= "<" 
@@ -193,7 +225,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "if" "(" <comparison> ")" <body-block> "else" <body-block>
 		| "if" "(" <comparison> ")" <body-block> "else if" "(" <comparison> ")" <body-block> "else" <body-block>
 <while-statement> ::= "while" "(" <expression> ")" <body-block>
-<function-body> ::= "{" <statement-list> <return> "}"
+<function-body> ::= "{" [<statement-list>] <return> "}"
 <return> ::= "return" [ <expression> ] ";"
 <parameter-list> ::= <identifier> "," <parameter-list>
 		| <identifier>
@@ -202,3 +234,31 @@ This is the BNF of SINS, which defines how the syntax works.
 <end-statement> ::= "end" ";"
 		| "end" "(" <expression> ")" ";"
 ```
+
+## Sample Program 3: Utilizing Functions in SINS
+
+Input
+```sins
+let x = 50;
+let y = 100;
+
+func multiply(a, b) {
+	return a * b;
+}
+
+func helloWorld() {
+	print('Hello World!')
+	return;
+}
+
+print(multiply(x, y));
+helloWorld();
+end;	
+```
+
+Output
+```text
+5000
+Hello World!
+```
+
