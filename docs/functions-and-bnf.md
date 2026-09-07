@@ -57,7 +57,7 @@ func printAndReturn(a, b) {
 	print(b);
 	return;
 }
-printAndReturn(a,b);
+printAndReturn(x,y);
 ```
 
 Output
