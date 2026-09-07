@@ -2,7 +2,7 @@
 
 ## Functions
 
-SINS supports functions via the ```func``` keyword. To create functions, type this keyword, then the name you wish to call the function, and then a set of parenthesis, which may or may not contain some parameters. A set of brackets are used to contain the code inside. ```return``` must be used at the end of every function.
+SINS supports functions via the ```func``` keyword. To create functions, type this keyword, then the name you wish to call the function, and then a set of parenthesis, which may or may not contain some parameters. A set of braces are used to contain the code inside. ```return``` must be used at the end of every function.
 
 A function can have one or more parameters.
 Example:
@@ -18,7 +18,7 @@ func multiply(a, b) {
 	return output;
 }
 
-multiply(a, b)
+print(multiply(a, b));
 ```
 
 Output
@@ -50,40 +50,28 @@ Example:
 
 Input
 ```sins
-func printNumbersRangedInclusive(min, max) {
-	let counter = min;
-	while (counter <= max) {
-		print(counter)
-		counter = counter + 1;
-	}
+let x = 10;
+let y = 20;
+func printAndReturn(a, b) {
+	print(a);
+	print(b);
 	return;
 }
-let x = 0;
-let y = 10;
-printNumbersRangedInclusive(x, y);
+printAndReturn(a,b);
 ```
 
 Output
 ```text
-0
-1
-2
-3
-4
-5
-6
-7
-8
-9
 10
+20
 ```
 
 Note: The function does not necessarily need to have input parameters to have a parameter for return.
 
 
-# BNF
+# EBNF
 
-This is the BNF of SINS, which defines how the syntax works.
+This is the EBNF of SINS, which defines how the syntax works.
 
 ```bnf
 <program> ::= <statement-list>
@@ -96,12 +84,13 @@ This is the BNF of SINS, which defines how the syntax works.
 		| <while-statement>
 		| <function-definition>
 		| <function>
+		| <function-call-statement>
 		| <end-statement>
 <assignment> ::= "let" <identifier> "=" <expression> ";"
 		| "let" <identifier> "=" <string> ";"
 		| "let" <identifier> ";"
 <reassignment> ::= <identifier> "=" <expression> ";"
-		| "let" <identifier> "=" <string> ";"
+		| <identifier> "=" <string> ";"
 <string> ::= "'" <characters> "'"
 <characters> ::= <char> <characters> 
 		| ""
@@ -119,7 +108,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "h" 
 		| "i" 
 		| "j"
-              	| "k" 
+		| "k" 
 		| "l" 
 		| "m" 
 		| "n" 
@@ -129,7 +118,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "r" 
 		| "s" 
 		| "t"
-              	| "u" 
+		| "u" 
 		| "v" 
 		| "w" 
 		| "x" 
@@ -145,7 +134,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "H" 
 		| "I" 
 		| "J"
-              	| "K" 
+		| "K" 
 		| "L" 
 		| "M" 
 		| "N" 
@@ -155,7 +144,7 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "R" 
 		| "S" 
 		| "T"
-              	| "U" 
+		| "U" 
 		| "V" 
 		| "W" 
 		| "X" 
@@ -201,18 +190,24 @@ This is the BNF of SINS, which defines how the syntax works.
            	| "|" 
            	| "}" 
            	| "~"
+			| " "
+<identifier> ::= <letter> { <letter> | <digit> | "_" }
+<number> ::= <digit> { <digit> }
+<letter> ::= <lowercase>
+			| <uppercase>
 <expression> ::= <term> "+" <expression> 
-		| <term> "-" <expression>
-		| <term>
+			| <term> "-" <expression>
+			| <term>
 <term> ::= <factor> "*" <term>
-		| <factor> "/" <term>
-		| <factor>
-<factor> ::= "(" <expression> ")" 
-		| <constant>
-<constant> ::= number
-<print-statement> ::= "print" "(" [<expression>] ")" ";"
-		| "print" "(" [<string>] ")" ";"
-		| "print" "(" [<function>] ")" ";"
+			| <factor> "/" <term>
+			| <factor>
+<factor> ::= [ "-" ] ( <number>
+			| <identifier>
+			| <function-call>
+			| "(" <expression> ")" )
+<constant> ::= <number>
+<print-statement> ::= "print" "(" ( [<expression>
+			| <string>] ) ")" ";"
 <body-block> ::= "{" <statement-list> "}"
 <comparison> ::= <expression> <comparison-symbol> <expression>
 <comparison-symbol> ::= "<" 
@@ -221,17 +216,18 @@ This is the BNF of SINS, which defines how the syntax works.
 		| "<=" 
 		| ">=" 
 		| "!="
-<if-statement> ::= "if" "(" <comparison> ")" <body-block>
-		| "if" "(" <comparison> ")" <body-block> "else" <body-block>
-		| "if" "(" <comparison> ")" <body-block> "else if" "(" <comparison> ")" <body-block> "else" <body-block>
-<while-statement> ::= "while" "(" <expression> ")" <body-block>
+<condition> ::= <expression> [ <comparison-symbol> <expression> ]
+<if-statement> ::= "if" "(" <condition> ")" <body-block>
+		| "if" "(" <condition> ")" <body-block> "else" <body-block>
+<while-statement> ::= "while" "(" <condition> ")" <body-block>
 <function-body> ::= "{" [<statement-list>] <return> "}"
 <return> ::= "return" [ <expression> ] ";"
 <parameter-list> ::= <identifier> "," <parameter-list>
 		| <identifier>
-<function-definition> ::= <function-definition> ::= "func" <identifier> "(" [<parameter-list>] ")" <function-body>
-<function> ::= <identifier> "(" [expression] ")" ";"
-<end-statement> ::= "end" ";"
+<function-definition> ::= "func" <identifier> "(" [<parameter-list>] ")" <function-body>
+<argument-list> ::= <expression> { "," <expression> }
+<function-call> ::= <identifier> "(" [ <argument-list> ] ")"
+<function-call-statement> ::= <function-call> ";"
 		| "end" "(" <expression> ")" ";"
 ```
 
@@ -247,7 +243,7 @@ func multiply(a, b) {
 }
 
 func helloWorld() {
-	print('Hello World!')
+	print('Hello World!');
 	return;
 }
 
