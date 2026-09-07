@@ -1,0 +1,257 @@
+# Functions & Grammar
+
+## Functions
+
+SINS supports functions via the ```func``` keyword. To create functions, type this keyword, then the name you wish to call the function, and then a set of parenthesis, which may or may not contain some parameters. A set of braces are used to contain the code inside. ```return``` must be used at the end of every function.
+
+A function can have one or more parameters.
+Example:
+
+Input
+```sins
+let a = 2;
+let b = 5;
+func multiply(a, b) {
+	let x = a;
+	let y = b;
+	let output = x * y;
+	return output;
+}
+
+print(multiply(a, b));
+```
+
+Output
+```text
+10
+```
+
+A function can also have no parameters.
+Example:
+
+Input
+```sins
+func noParameters() {
+	print('This function has no parameters.');
+	return;
+}
+
+noParameters();
+```
+
+Output
+```text
+This function has no parameters.
+```
+
+As you may have seen already, the ```return``` keyword does not necessarily have to have any values specified after it. This can be for when you do not want a function returning any kind of data, for example.
+
+Example:
+
+Input
+```sins
+let x = 10;
+let y = 20;
+func printAndReturn(a, b) {
+	print(a);
+	print(b);
+	return;
+}
+printAndReturn(x, y);
+```
+
+Output
+```text
+10
+20
+```
+
+Note: A function does not need input parameters to return a value, and a function with parameters may use ```return;``` without returning a value.
+
+
+# EBNF
+
+This is the EBNF of SINS, which defines how the syntax works.
+
+```ebnf
+<program> ::= <statement-list>
+<statement-list> ::= <statement>
+		| <statement> <statement-list>
+<statement> ::= <assignment>
+		| <reassignment>
+		| <print-statement>
+		| <if-statement>
+		| <while-statement>
+		| <function-definition>
+		| <function-call-statement>
+		| <end-statement>
+<assignment> ::= "let" <identifier> "=" <expression> ";"
+		| "let" <identifier> "=" <string> ";"
+		| "let" <identifier> ";"
+<reassignment> ::= <identifier> "=" <expression> ";"
+		| <identifier> "=" <string> ";"
+<string> ::= "'" <characters> "'"
+<characters> ::= <char> <characters> 
+		| ""
+<char> ::= <lowercase> 
+		| <uppercase> 
+		| <digit>
+		| <symbol>
+		| " "
+<lowercase> ::= "a" 
+		| "b" 
+		| "c" 
+		| "d" 
+		| "e" 
+		| "f" 
+		| "g" 
+		| "h" 
+		| "i" 
+		| "j"
+		| "k" 
+		| "l" 
+		| "m" 
+		| "n" 
+		| "o" 
+		| "p" 
+		| "q" 
+		| "r" 
+		| "s" 
+		| "t"
+		| "u" 
+		| "v" 
+		| "w" 
+		| "x" 
+		| "y" 
+		| "z"
+<uppercase> ::= "A" 
+		| "B" 
+		| "C" 
+		| "D" 
+		| "E" 
+		| "F" 
+		| "G" 
+		| "H" 
+		| "I" 
+		| "J"
+		| "K" 
+		| "L" 
+		| "M" 
+		| "N" 
+		| "O" 
+		| "P" 
+		| "Q" 
+		| "R" 
+		| "S" 
+		| "T"
+		| "U" 
+		| "V" 
+		| "W" 
+		| "X" 
+		| "Y" 
+		| "Z"
+<digit> ::= "0" 
+		| "1" 
+		| "2" 
+		| "3" 
+		| "4" 
+		| "5" 
+		| "6" 
+		| "7" 
+		| "8" 
+		| "9"
+<symbol> ::= "!" 
+           	| "#" 
+           	| "$" 
+           	| "%" 
+           	| "&" 
+           	| "(" 
+           	| ")" 
+           	| "*" 
+           	| "+" 
+           	| "," 
+           	| "-" 
+           	| "." 
+           	| "/" 
+           	| ":" 
+           	| ";" 
+           	| "<" 
+           	| "=" 
+           	| ">" 
+           	| "?" 
+           	| "@" 
+           	| "[" 
+           	| "\" 
+           	| "]" 
+           	| "^" 
+           	| "_" 
+           	| "`" 
+           	| "{" 
+           	| "|" 
+           	| "}" 
+           	| "~"
+<identifier> ::= <letter> { <letter> | <digit> | "_" }
+<number> ::= <digit> { <digit> }
+<letter> ::= <lowercase>
+			| <uppercase>
+<expression> ::= <term> { ( "+"
+			| "-" ) <term> }
+<term> ::= <factor> { ( "*"
+			| "/" ) <factor> }
+<factor> ::= [ "-" ] ( <number>
+			| <identifier>
+			| <function-call>
+			| "(" <expression> ")" )
+<constant> ::= <number>
+<print-statement> ::= "print" "(" ( <expression>
+			| <string> ) ")" ";"
+<body-block> ::= "{" <statement-list> "}"
+<comparison> ::= <expression> <comparison-symbol> <expression>
+<comparison-symbol> ::= "<" 
+		| ">" 
+		| "==" 
+		| "<=" 
+		| ">=" 
+		| "!="
+<condition> ::= <expression> [ <comparison-symbol> <expression> ]
+<if-statement> ::= "if" "(" <condition> ")" <body-block>
+		| "if" "(" <condition> ")" <body-block> "else" <body-block>
+<while-statement> ::= "while" "(" <condition> ")" <body-block>
+<function-body> ::= "{" [<statement-list>] <return> "}"
+<return> ::= "return" [ <expression> ] ";"
+<parameter-list> ::= <identifier> "," <parameter-list>
+		| <identifier>
+<function-definition> ::= "func" <identifier> "(" [<parameter-list>] ")" <function-body>
+<argument-list> ::= <expression> { "," <expression> }
+<function-call> ::= <identifier> "(" [ <argument-list> ] ")"
+<function-call-statement> ::= <function-call> ";"
+<end-statement> ::= "end" ";"
+		| "end" "(" <expression> ")" ";"
+```
+
+## Sample Program 3: Utilizing Functions in SINS
+
+Input
+```sins
+let x = 50;
+let y = 100;
+
+func multiply(a, b) {
+	return a * b;
+}
+
+func helloWorld() {
+	print('Hello World!');
+	return;
+}
+
+print(multiply(x, y));
+helloWorld();
+end;
+```
+
+Output
+```text
+5000
+Hello World!
+```
