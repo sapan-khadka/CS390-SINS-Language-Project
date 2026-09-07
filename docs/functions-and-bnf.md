@@ -44,7 +44,7 @@ Output
 This function has no parameters.
 ```
 
-As you may have seen already, the ```return``` keyword does not necessarily have to have any parameters specified after it. This can be for when you do not want a function returning any kind of data. (In other words, a function that simply sets some external variables, or maybe a program that only prints something to the console.)
+As you may have seen already, the ```return``` keyword does not necessarily have to have any parameters specified after it. This can be for when you do not want a function returning any kind of data, for example.
 
 Example:
 
@@ -57,7 +57,7 @@ func printAndReturn(a, b) {
 	print(b);
 	return;
 }
-printAndReturn(x,y);
+printAndReturn(x, y);
 ```
 
 Output
@@ -66,14 +66,14 @@ Output
 20
 ```
 
-Note: The function does not necessarily need to have input parameters to have a parameter for return.
+Note: A function does not need input parameters to return a value, and a function with parameters may use ```return;``` without returning a value.
 
 
 # EBNF
 
 This is the EBNF of SINS, which defines how the syntax works.
 
-```bnf
+```ebnf
 <program> ::= <statement-list>
 <statement-list> ::= <statement>
 		| <statement> <statement-list>
@@ -83,7 +83,6 @@ This is the EBNF of SINS, which defines how the syntax works.
 		| <if-statement>
 		| <while-statement>
 		| <function-definition>
-		| <function>
 		| <function-call-statement>
 		| <end-statement>
 <assignment> ::= "let" <identifier> "=" <expression> ";"
@@ -228,6 +227,7 @@ This is the EBNF of SINS, which defines how the syntax works.
 <argument-list> ::= <expression> { "," <expression> }
 <function-call> ::= <identifier> "(" [ <argument-list> ] ")"
 <function-call-statement> ::= <function-call> ";"
+<end-statement> ::= "end" ";"
 		| "end" "(" <expression> ")" ";"
 ```
 
