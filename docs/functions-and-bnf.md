@@ -44,7 +44,7 @@ Output
 This function has no parameters.
 ```
 
-As you may have seen already, the ```return``` keyword does not necessarily have to have any parameters specified after it. This can be for when you do not want a function returning any kind of data, for example.
+As you may have seen already, the ```return``` keyword does not necessarily have to have any values specified after it. This can be for when you do not want a function returning any kind of data, for example.
 
 Example:
 
@@ -97,6 +97,7 @@ This is the EBNF of SINS, which defines how the syntax works.
 		| <uppercase> 
 		| <digit>
 		| <symbol>
+		| " "
 <lowercase> ::= "a" 
 		| "b" 
 		| "c" 
@@ -189,24 +190,21 @@ This is the EBNF of SINS, which defines how the syntax works.
            	| "|" 
            	| "}" 
            	| "~"
-			| " "
 <identifier> ::= <letter> { <letter> | <digit> | "_" }
 <number> ::= <digit> { <digit> }
 <letter> ::= <lowercase>
 			| <uppercase>
-<expression> ::= <term> "+" <expression> 
-			| <term> "-" <expression>
-			| <term>
-<term> ::= <factor> "*" <term>
-			| <factor> "/" <term>
-			| <factor>
+<expression> ::= <term> { ( "+"
+			| "-" ) <term> }
+<term> ::= <factor> { ( "*"
+			| "/" ) <factor> }
 <factor> ::= [ "-" ] ( <number>
 			| <identifier>
 			| <function-call>
 			| "(" <expression> ")" )
 <constant> ::= <number>
-<print-statement> ::= "print" "(" ( [<expression>
-			| <string>] ) ")" ";"
+<print-statement> ::= "print" "(" ( <expression>
+			| <string> ) ")" ";"
 <body-block> ::= "{" <statement-list> "}"
 <comparison> ::= <expression> <comparison-symbol> <expression>
 <comparison-symbol> ::= "<" 
@@ -249,7 +247,7 @@ func helloWorld() {
 
 print(multiply(x, y));
 helloWorld();
-end;	
+end;
 ```
 
 Output
@@ -257,4 +255,3 @@ Output
 5000
 Hello World!
 ```
-
