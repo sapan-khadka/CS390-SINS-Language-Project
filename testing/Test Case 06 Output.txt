@@ -1,0 +1,2 @@
+LEXICAL ERROR at line 1, column 11:
+Unexpected character '@'

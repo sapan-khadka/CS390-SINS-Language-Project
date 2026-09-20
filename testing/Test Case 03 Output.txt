@@ -1,0 +1,8 @@
+PRINT
+LEFT_PAREN
+STRING(You feel your SINS crawling up your back...)
+RIGHT_PAREN
+SEMICOLON
+
+END
+SEMICOLON
