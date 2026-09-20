@@ -30,7 +30,7 @@ part2-lexer/
 From inside the `part2-lexer` folder, run:
 
 ```bash
-python3 run_lexer.py tests/test_inputs/test01_variable.sins
+python3 run_lexer.py tests/test_inputs/01_variable.sins
 ```
 
 The lexer prints one token per line.
@@ -51,7 +51,6 @@ IDENTIFIER(x)
 ASSIGN
 NUMBER(10)
 SEMICOLON
-EOF
 ```
 
 ## Error Handling
@@ -68,7 +67,7 @@ The tests cover:
 - Control structures
 - Invalid input
 
-Additional tests may cover functions, strings, decimals, and the `end` statement.
+The suite also tests functions, strings, and the `end` statement.
 
 ## Team Workflow
 
