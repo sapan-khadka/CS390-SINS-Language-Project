@@ -52,3 +52,8 @@ run_test(
     "Test 6 - Invalid Input",
     "let x = 10 @ 5;"
 )
+# Test 7: End statement
+run_test(
+    "Test 7 - End Statement",
+    "end;"
+)

@@ -68,3 +68,9 @@ RBRACE
 --- Test 6 - Invalid Input ---
 Input: let x = 10 @ 5;
 Lexer Error: Invalid character '@' at position 11
+
+--- Test 7 - End Statement ---
+Input: end;
+Tokens:
+END
+SEMICOLON
