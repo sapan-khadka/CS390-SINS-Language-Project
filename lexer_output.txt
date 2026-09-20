@@ -1,0 +1,70 @@
+
+--- Test 1 - Variable Declaration ---
+Input: let x = 10;
+Tokens:
+LET
+IDENTIFIER(x)
+ASSIGN
+NUMBER(10)
+SEMICOLON
+
+--- Test 2 - Arithmetic ---
+Input: let result = 10 + 5 * 2;
+Tokens:
+LET
+IDENTIFIER(result)
+ASSIGN
+NUMBER(10)
+PLUS
+NUMBER(5)
+MULTIPLY
+NUMBER(2)
+SEMICOLON
+
+--- Test 3 - Print Statement ---
+Input: print('Hello World!');
+Tokens:
+PRINT
+LPAREN
+STRING(Hello World!)
+RPAREN
+SEMICOLON
+
+--- Test 4 - Control Structure ---
+Input: if (x >= 10) { print('Big'); }
+Tokens:
+IF
+LPAREN
+IDENTIFIER(x)
+GREATER_EQUAL
+NUMBER(10)
+RPAREN
+LBRACE
+PRINT
+LPAREN
+STRING(Big)
+RPAREN
+SEMICOLON
+RBRACE
+
+--- Test 5 - Function ---
+Input: func multiply(a, b) { return a * b; }
+Tokens:
+FUNC
+IDENTIFIER(multiply)
+LPAREN
+IDENTIFIER(a)
+COMMA
+IDENTIFIER(b)
+RPAREN
+LBRACE
+RETURN
+IDENTIFIER(a)
+MULTIPLY
+IDENTIFIER(b)
+SEMICOLON
+RBRACE
+
+--- Test 6 - Invalid Input ---
+Input: let x = 10 @ 5;
+Lexer Error: Invalid character '@' at position 11
