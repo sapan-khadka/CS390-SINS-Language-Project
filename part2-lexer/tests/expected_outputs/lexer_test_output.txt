@@ -74,3 +74,12 @@ Input: end;
 Tokens:
 END
 SEMICOLON
+
+--- Test 8 - Decimal Number ---
+Input: let price = 19.95;
+Tokens:
+LET
+IDENTIFIER(price)
+ASSIGN
+NUMBER(19.95)
+SEMICOLON

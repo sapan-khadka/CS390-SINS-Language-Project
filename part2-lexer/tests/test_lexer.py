@@ -58,3 +58,9 @@ run_test(
     "Test 7 - End Statement",
     "end;",
 )
+
+# Test 8: Decimal number
+run_test(
+    "Test 8 - Decimal Number",
+    "let price = 19.95;",
+)
