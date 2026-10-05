@@ -6,20 +6,20 @@ ChatGPT
 
 ## How did your group use AI for this project milestone?
 
-Our group used ChatGPT to clarify the Part 3 requirements, divide responsibilities, plan the repository structure, check compatibility between the existing lexer and the parser, troubleshoot Git and import-path issues, and prepare a command-line runner. AI was used as a development aid, while group members remained responsible for implementing, reviewing, testing, and understanding the submitted work.
+Our group used ChatGPT to clarify the Part 3 requirements, divide responsibilities, plan the repository structure, check compatibility between the existing lexer and parser, troubleshoot Git and Python import-path issues, plan tests, and organize documentation. Group members remained responsible for implementing, reviewing, testing, and understanding the submitted work.
 
 ## Which project components received AI assistance?
 
-AI assistance was used for the Part 3 folder organization, the lexer-to-parser integration plan, the command-line runner, test-planning guidance, error-handling review, documentation organization, and this AI Use Statement. The parser logic, AST implementation, grammar, tests, and outputs are assigned to group members and will be reviewed before submission.
+AI assistance was used for repository organization, lexer-to-parser integration planning, command-line runner guidance, test planning, error-handling review, documentation organization, and this AI Use Statement. The group reviewed and tested the parser, AST implementation, grammar, tests, and generated outputs before submission.
 
 ## Describe at least one AI-generated suggestion, explanation, or code segment that your group modified, corrected, rejected, or improved.
 
-An initial AI-assisted organization plan assumed that new parser files could be placed directly into the repository before reviewing the existing branches. The group checked Nathaniel's branch and found that its parser imported `src.lexer` and `.token_types` even though the files were stored at the repository root. That structure would cause import errors. We corrected the integration plan by creating a proper `part3-parser/src/` Python package, retaining the verified Part 2 lexer interface, and requiring parser and AST files to be placed inside that package. We also preserved the team member's contribution instead of duplicating or replacing it.
+An initial AI-assisted organization plan assumed that parser files could be added before checking compatibility with the existing repository. The group found that the parser expected imports from the `src` package, so placing files elsewhere would cause import errors. We corrected the structure by placing the lexer, parser, AST nodes, and token definitions inside `part3-parser/src/`. We also corrected the test command: running `python3 tests/test_parser.py` caused `ModuleNotFoundError: No module named 'src'`, while running unittest discovery from the project directory correctly located the package.
 
 ## How did your group test or independently verify AI-assisted work?
 
-We pulled the integration branch onto a local Mac, confirmed the expected project files, and ran the updated lexer on `let x = 2 + 3 * 4;`. The lexer produced the expected tokens in the correct order. We then used Python's `py_compile` module to verify that the lexer, token definitions, and command-line parser runner contained valid Python syntax. After the parser and AST modules are integrated, the group will run the full parser test suite, verify operator precedence, compare at least three AST outputs, and confirm meaningful syntax errors.
+We ran 12 automated parser tests using `python3 -m unittest discover -s tests -p "test_*.py" -v`, and all tests passed. The tests covered variable declarations, assignments, print statements, multiple statements, arithmetic expressions, parenthesized expressions, and invalid syntax. We also ran the command-line parser on three programs and inspected their AST output to verify multiplication and division precedence and the effect of parentheses.
 
 ## What did your group learn from using AI during this milestone?
 
-We learned that AI suggestions must be checked against the project's existing interfaces, repository structure, grammar, and team responsibilities. Correct-looking code may still fail when files are stored in the wrong package or use incompatible imports. Reviewing branches, testing incrementally, and preserving clear ownership helped the group identify these issues before final integration.
+We learned that AI suggestions must be checked against the project's existing interfaces, grammar, package structure, and team responsibilities. Correct-looking code can still fail because of incompatible imports or execution commands. Incremental testing, reviewing pull requests, and comparing AST output with the expected structure helped the group identify and correct these issues.
