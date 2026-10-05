@@ -1,7 +1,7 @@
 # Part 3 Documentation
 
-This folder will contain:
+This folder contains the supporting documentation for the SINS parser milestone:
 
-- Updated SINS EBNF grammar
-- AI Use Statement using the course template
-- Notes describing any verified, corrected, modified, or rejected AI-generated suggestion
+- `GRAMMAR.ebnf` — updated EBNF grammar for statements and expressions
+- `AST_EXAMPLES.md` — source programs and AST output for three examples
+- `AI_USE_STATEMENT.md` — required AI assistance and verification statement
