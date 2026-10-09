@@ -1,24 +1,6 @@
-from token import (
-    Token,
-    LET, PRINT, IF, ELSE, WHILE, FUNC, RETURN, END,
-    IDENTIFIER, NUMBER, STRING,
-    ASSIGN,
-    PLUS, MINUS, MULTIPLY, DIVIDE,
-    EQUAL, NOT_EQUAL, LESS, LESS_EQUAL, GREATER, GREATER_EQUAL,
-    LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON, COMMA
-)
+"""Lexer for the SINS programming language."""
 
-
-KEYWORDS = {
-    "let": LET,
-    "print": PRINT,
-    "if": IF,
-    "else": ELSE,
-    "while": WHILE,
-    "func": FUNC,
-    "return": RETURN,
-    "end": END
-}
+from token_types import Token, TokenType, KEYWORDS
 
 
 class LexerError(Exception):
@@ -29,6 +11,18 @@ class Lexer:
     def __init__(self, source):
         self.source = source
         self.position = 0
+        self.line = 1
+        self.column = 1
+
+    def advance(self):
+        current = self.source[self.position]
+        self.position += 1
+
+        if current == "\n":
+            self.line += 1
+            self.column = 1
+        else:
+            self.column += 1
 
     def tokenize(self):
         tokens = []
@@ -36,98 +30,120 @@ class Lexer:
         while self.position < len(self.source):
             current = self.source[self.position]
 
-            # Ignore whitespace
             if current.isspace():
-                self.position += 1
+                self.advance()
                 continue
 
-            # Identifiers and keywords
+            start_line = self.line
+            start_column = self.column
+
             if current.isalpha() or current == "_":
-                tokens.append(self.read_identifier())
+                tokens.append(
+                    self.read_identifier(start_line, start_column)
+                )
                 continue
 
-            # Numbers
             if current.isdigit():
-                tokens.append(self.read_number())
+                tokens.append(
+                    self.read_number(start_line, start_column)
+                )
                 continue
 
-            # Strings
             if current == "'":
-                tokens.append(self.read_string())
+                tokens.append(
+                    self.read_string(start_line, start_column)
+                )
                 continue
 
-            # Two-character operators
             two_char = self.source[self.position:self.position + 2]
 
-            if two_char == "==":
-                tokens.append(Token(EQUAL))
-                self.position += 2
+            two_char_tokens = {
+                "==": TokenType.EQUAL,
+                "!=": TokenType.NOT_EQUAL,
+                "<=": TokenType.LESS_EQUAL,
+                ">=": TokenType.GREATER_EQUAL,
+            }
+
+            if two_char in two_char_tokens:
+                self.advance()
+                self.advance()
+
+                tokens.append(
+                    Token(
+                        two_char_tokens[two_char],
+                        two_char,
+                        start_line,
+                        start_column
+                    )
+                )
                 continue
 
-            if two_char == "!=":
-                tokens.append(Token(NOT_EQUAL))
-                self.position += 2
-                continue
-
-            if two_char == "<=":
-                tokens.append(Token(LESS_EQUAL))
-                self.position += 2
-                continue
-
-            if two_char == ">=":
-                tokens.append(Token(GREATER_EQUAL))
-                self.position += 2
-                continue
-
-            # One-character operators and delimiters
             single_char_tokens = {
-                "=": ASSIGN,
-                "+": PLUS,
-                "-": MINUS,
-                "*": MULTIPLY,
-                "/": DIVIDE,
-                "<": LESS,
-                ">": GREATER,
-                "(": LPAREN,
-                ")": RPAREN,
-                "{": LBRACE,
-                "}": RBRACE,
-                ";": SEMICOLON,
-                ",": COMMA
+                "=": TokenType.ASSIGN,
+                "+": TokenType.PLUS,
+                "-": TokenType.MINUS,
+                "*": TokenType.MULTIPLY,
+                "/": TokenType.DIVIDE,
+                "<": TokenType.LESS_THAN,
+                ">": TokenType.GREATER_THAN,
+                "(": TokenType.LEFT_PAREN,
+                ")": TokenType.RIGHT_PAREN,
+                "{": TokenType.LEFT_BRACE,
+                "}": TokenType.RIGHT_BRACE,
+                ",": TokenType.COMMA,
+                ";": TokenType.SEMICOLON,
             }
 
             if current in single_char_tokens:
-                tokens.append(Token(single_char_tokens[current]))
-                self.position += 1
+                self.advance()
+
+                tokens.append(
+                    Token(
+                        single_char_tokens[current],
+                        current,
+                        start_line,
+                        start_column
+                    )
+                )
                 continue
 
-            # Unknown character
             raise LexerError(
-                f"Invalid character '{current}' at position {self.position}"
+                f"Invalid character {current!r} at "
+                f"line {start_line}, column {start_column}"
             )
+
+        tokens.append(
+            Token(TokenType.EOF, "", self.line, self.column)
+        )
 
         return tokens
 
-    def read_identifier(self):
+    def read_identifier(self, start_line, start_column):
         start = self.position
 
-        while (
-            self.position < len(self.source)
-            and (
-                self.source[self.position].isalnum()
-                or self.source[self.position] == "_"
-            )
-        ):
-            self.position += 1
+        while self.position < len(self.source):
+            current = self.source[self.position]
+
+            if current.isalnum() or current == "_":
+                self.advance()
+            else:
+                break
 
         value = self.source[start:self.position]
 
         if value in KEYWORDS:
-            return Token(KEYWORDS[value])
+            token_type = KEYWORDS[value]
+        else:
+            token_type = TokenType.IDENTIFIER
 
-        return Token(IDENTIFIER, value)
+        return Token(
+            token_type,
+            value,
+            start_line,
+            start_column
+        )
 
-    def read_number(self):
+    def read_number(self, start_line, start_column):
         start = self.position
         decimal_found = False
 
@@ -135,29 +151,49 @@ class Lexer:
             current = self.source[self.position]
 
             if current.isdigit():
-                self.position += 1
-
+                self.advance()
             elif current == "." and not decimal_found:
                 decimal_found = True
-                self.position += 1
-
+                self.advance()
             else:
                 break
 
         value = self.source[start:self.position]
-        return Token(NUMBER, value)
 
-    def read_string(self):
-        # Skip opening quote
-        self.position += 1
+        return Token(
+            TokenType.NUMBER,
+            value,
+            start_line,
+            start_column
+        )
+
+    def read_string(self, start_line, start_column):
+        self.advance()
         start = self.position
 
         while self.position < len(self.source):
-            if self.source[self.position] == "'":
+            current = self.source[self.position]
+
+            if current == "'":
                 value = self.source[start:self.position]
-                self.position += 1
-                return Token(STRING, value)
+                self.advance()
 
-            self.position += 1
+                return Token(
+                    TokenType.STRING,
+                    value,
+                    start_line,
+                    start_column
+                )
 
-        raise LexerError("Unterminated string")
+            if current == "\n":
+                raise LexerError(
+                    f"Unterminated string starting at "
+                    f"line {start_line}, column {start_column}"
+                )
+
+            self.advance()
+
+        raise LexerError(
+            f"Unterminated string starting at "
+            f"line {start_line}, column {start_column}"
+        )
