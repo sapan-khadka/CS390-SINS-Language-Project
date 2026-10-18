@@ -77,11 +77,13 @@ class Parser:
         return AssignmentNode(name, value)
 
     
+    
     def _parse_print(self):
-        if self._check(TokenType.SEMICOLON):
-            self._error("Expected a value after 'print'")
-
+        parenthesized = self._match(TokenType.LEFT_PAREN)
         expression = self._parse_expression()
+
+        if parenthesized and not self._match(TokenType.RIGHT_PAREN):
+            self._error("Expected ')' after print expression")
 
         if not self._match(TokenType.SEMICOLON):
             self._error("Expected ';' after print statement")
