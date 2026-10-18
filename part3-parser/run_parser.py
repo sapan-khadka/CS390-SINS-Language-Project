@@ -1,10 +1,10 @@
-"""Command-line runner for the SINS lexer and parser."""
 
 import sys
 from pathlib import Path
 
 from src.lexer import Lexer, LexerError
 from src.parser import Parser, ParserError
+from src.interpreter import Interpreter, InterpreterError
 
 
 def main() -> int:
@@ -22,22 +22,23 @@ def main() -> int:
         source_code = source_path.read_text(encoding="utf-8")
         tokens = Lexer(source_code).tokenize()
         ast = Parser(tokens).parse()
-
-        print(ast)
+        Interpreter().interpret(ast)
         return 0
 
     except LexerError as error:
         print(f"Lexical error: {error}")
         return 1
-
     except ParserError as error:
         print(f"Syntax error: {error}")
         return 1
-
+    except InterpreterError as error:
+        print(f"Runtime error: {error}")
+        return 1
     except OSError as error:
-        print(f"Error reading file: {error}")
+        print(f"File error: {error}")
         return 1
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
