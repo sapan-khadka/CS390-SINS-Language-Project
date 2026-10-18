@@ -68,8 +68,7 @@ class Parser:
         if not self._match(TokenType.SEMICOLON):
             self._error(f"Expected ';' after declaration of '{name}'")
 
-        return AssignmentNode(name, value)
-
+        return AssignmentNode(name, value, is_declaration=True)
     def _parse_assignment(self):
         name = self._advance().lexeme
 
