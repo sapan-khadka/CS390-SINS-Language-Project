@@ -17,13 +17,12 @@ from .runtime_errors import (
     InvalidOperationError,
 )
 
-
 InterpreterError = SINSRuntimeError
 
 
 class Interpreter:
     def __init__(self, environment=None):
-        self.environment = environment or Environment()
+        self.environment = environment if environment is not None else Environment()
 
     def interpret(self, program):
         if not isinstance(program, ProgramNode):
@@ -34,6 +33,9 @@ class Interpreter:
 
     def execute(self, node):
         return self._execute(node)
+
+    def evaluate(self, node):
+        return self._evaluate(node)
 
     def _execute(self, node):
         if isinstance(node, ProgramNode):
@@ -49,7 +51,7 @@ class Interpreter:
         if isinstance(node, AssignmentNode):
             value = self._evaluate(node.value)
 
-            if node.is_declaration:
+            if getattr(node, "is_declaration", False):
                 self.environment.define(node.name, value)
             else:
                 self.environment.assign(node.name, value)
@@ -97,18 +99,12 @@ class Interpreter:
             operator = node.operator
 
             if operator in ("==", "!=", "<", "<=", ">", ">="):
-                return self._evaluate_comparison(
-                    operator, left, right
-                )
+                return self._evaluate_comparison(operator, left, right)
 
             if operator in ("+", "-", "*", "/"):
-                return self._evaluate_arithmetic(
-                    operator, left, right
-                )
+                return self._evaluate_arithmetic(operator, left, right)
 
-            raise InvalidOperationError(
-                operator, left, right
-            )
+            raise InvalidOperationError(operator, left, right)
 
         raise SINSRuntimeError(
             f"Unsupported expression: {type(node).__name__}"
@@ -125,10 +121,13 @@ class Interpreter:
 
         if operator == "+":
             return left + right
+
         if operator == "-":
             return left - right
+
         if operator == "*":
             return left * right
+
         if operator == "/":
             if right == 0:
                 raise DivisionByZeroError()
@@ -137,11 +136,12 @@ class Interpreter:
         raise InvalidOperationError(operator, left, right)
 
     def _evaluate_comparison(self, operator, left, right):
-        if operator == "==":
-            return left == right
-
-        if operator == "!=":
-            return left != right
+        if operator in ("==", "!="):
+            return (
+                left == right
+                if operator == "=="
+                else left != right
+            )
 
         if (
             isinstance(left, bool)
@@ -153,10 +153,13 @@ class Interpreter:
 
         if operator == "<":
             return left < right
+
         if operator == "<=":
             return left <= right
+
         if operator == ">":
             return left > right
+
         if operator == ">=":
             return left >= right
 
