@@ -1,5 +1,10 @@
+
+        
+"""Abstract syntax tree nodes for SINS."""
+
+
 class Node:
-    """Base class for all nodes."""
+    """Base class for all AST nodes."""
     pass
 
 
@@ -41,12 +46,16 @@ class BinaryOpNode(Node):
 
 
 class AssignmentNode(Node):
-    def __init__(self, name, value):
+    def __init__(self, name, value, is_declaration=False):
         self.name = name
         self.value = value
+        self.is_declaration = is_declaration
 
     def __repr__(self):
-        return f"AssignmentNode(name={self.name}, value={self.value})"
+        return (
+            f"AssignmentNode(name={self.name}, value={self.value}, "
+            f"is_declaration={self.is_declaration})"
+        )
 
 
 class PrintNode(Node):
@@ -55,3 +64,36 @@ class PrintNode(Node):
 
     def __repr__(self):
         return f"PrintNode(expression={self.expression})"
+
+
+class BlockNode(Node):
+    def __init__(self, statements):
+        self.statements = statements
+
+    def __repr__(self):
+        return f"BlockNode(statements={self.statements})"
+
+
+class IfNode(Node):
+    def __init__(self, condition, then_branch, else_branch=None):
+        self.condition = condition
+        self.then_branch = then_branch
+        self.else_branch = else_branch
+
+    def __repr__(self):
+        return (
+            f"IfNode(condition={self.condition}, "
+            f"then_branch={self.then_branch}, "
+            f"else_branch={self.else_branch})"
+        )
+
+
+class WhileNode(Node):
+    def __init__(self, condition, body):
+        self.condition = condition
+        self.body = body
+
+    def __repr__(self):
+        return (
+            f"WhileNode(condition={self.condition}, body={self.body})"
+        )
