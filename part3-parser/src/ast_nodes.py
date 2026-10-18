@@ -42,14 +42,19 @@ class BinaryOpNode(Node):
             f"left={self.left}, right={self.right})"
         )
 
-
 class AssignmentNode(Node):
-    def __init__(self, name, value):
+    def __init__(self, name, value, is_declaration=False):
         self.name = name
         self.value = value
+        self.is_declaration = is_declaration
 
     def __repr__(self):
-        return f"AssignmentNode(name={self.name}, value={self.value})"
+        return (
+            f"AssignmentNode(name={self.name}, "
+            f"value={self.value}, "
+            f"is_declaration={self.is_declaration})"
+        )
+
 
 
 class PrintNode(Node):
