@@ -96,6 +96,9 @@ class Lexer:
                 f"at line {self.line}, column {self.column}"
             )
 
+               tokens.append(
+            Token(TokenType.EOF, "", self.line, self.column)
+        )
         return tokens
 
     def _read_identifier(self):
