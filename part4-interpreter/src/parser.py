@@ -76,14 +76,16 @@ class Parser:
             self._error(f"Expected ';' after assignment to '{name}'")
         return AssignmentNode(name, value)
 
+    
     def _parse_print(self):
-        parenthesized = self._match(TokenType.LEFT_PAREN)
+        if self._check(TokenType.SEMICOLON):
+            self._error("Expected a value after 'print'")
+
         expression = self._parse_expression()
 
-        if parenthesized and not self._match(TokenType.RIGHT_PAREN):
-            self._error("Expected ')' after print expression")
         if not self._match(TokenType.SEMICOLON):
             self._error("Expected ';' after print statement")
+
         return PrintNode(expression)
 
     def _parse_if(self):
