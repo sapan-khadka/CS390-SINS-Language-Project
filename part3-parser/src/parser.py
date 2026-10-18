@@ -84,7 +84,6 @@ class Parser:
             self._error(f"Expected ';' after assignment to '{name}'")
 
         return AssignmentNode(name, value)
-
     def _parse_print(self):
         if self._check(TokenType.SEMICOLON):
             self._error("Expected a value after 'print'")
