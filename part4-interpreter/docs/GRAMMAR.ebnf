@@ -1,4 +1,4 @@
-(* SINS Language Grammar — Part 4 Interpreter *)
+program          = { statement } ;
 
 statement        = declaration
                  | assignment
@@ -7,14 +7,9 @@ statement        = declaration
                  | while_statement
                  | block ;
 
-statement = declaration
-          | assignment
-          | print_statement
-          | if_statement
-          | while_statement
-          | block ;
+declaration      = "let", identifier, "=", expression, ";" ;
 
-declaration = "let", identifier, "=", expression, ";" ;
+assignment       = identifier, "=", expression, ";" ;
 
 print_statement  = "print",
                    ( "(", expression, ")" | expression ),
@@ -40,43 +35,31 @@ comparison_operator
                  | "<="
                  | ">=" ;
 
-if_statement = "if", "(", expression, ")", block,
-               [ "else", block ] ;
+addition         = multiplication,
+                   { ( "+" | "-" ), multiplication } ;
 
-while_statement = "while", "(", expression, ")", block ;
+multiplication   = factor,
+                   { ( "*" | "/" ), factor } ;
 
-block = "{", { statement }, "}" ;
+factor           = number
+                 | identifier
+                 | "(", expression, ")" ;
 
-expression = comparison ;
+identifier       = letter, { letter | digit | "_" } ;
 
-comparison = addition, [ comparison_operator, addition ] ;
+number           = digit, { digit },
+                   [ ".", digit, { digit } ] ;
 
-comparison_operator = "==" | "!=" | "<" | ">" | "<=" | ">=" ;
+letter           = "A" | "B" | "C" | "D" | "E" | "F"
+                 | "G" | "H" | "I" | "J" | "K" | "L"
+                 | "M" | "N" | "O" | "P" | "Q" | "R"
+                 | "S" | "T" | "U" | "V" | "W" | "X"
+                 | "Y" | "Z"
+                 | "a" | "b" | "c" | "d" | "e" | "f"
+                 | "g" | "h" | "i" | "j" | "k" | "l"
+                 | "m" | "n" | "o" | "p" | "q" | "r"
+                 | "s" | "t" | "u" | "v" | "w" | "x"
+                 | "y" | "z" ;
 
-addition = multiplication,
-           { ("+" | "-"), multiplication } ;
-
-multiplication = factor,
-                 { ("*" | "/"), factor } ;
-
-factor = number
-       | identifier
-       | "(", expression, ")" ;
-
-identifier = letter, { letter | digit | "_" } ;
-
-number = digit, { digit }, [ ".", digit, { digit } ] ;
-
-letter = "A" | "B" | "C" | "D" | "E" | "F"
-       | "G" | "H" | "I" | "J" | "K" | "L"
-       | "M" | "N" | "O" | "P" | "Q" | "R"
-       | "S" | "T" | "U" | "V" | "W" | "X"
-       | "Y" | "Z"
-       | "a" | "b" | "c" | "d" | "e" | "f"
-       | "g" | "h" | "i" | "j" | "k" | "l"
-       | "m" | "n" | "o" | "p" | "q" | "r"
-       | "s" | "t" | "u" | "v" | "w" | "x"
-       | "y" | "z" ;
-
-digit = "0" | "1" | "2" | "3" | "4"
-      | "5" | "6" | "7" | "8" | "9" ;
+digit            = "0" | "1" | "2" | "3" | "4"
+                 | "5" | "6" | "7" | "8" | "9" ;
