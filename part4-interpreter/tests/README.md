@@ -90,15 +90,15 @@ Additional error cases should include reading an undefined variable and dividing
 
 ### Actual Results
 
-arithmetic.sins:
+arithmetic.sins:\
 14\
 20
 
-variable.sins:
+variable.sins:\
 15\
 11
 
-comparisons.sins:
+comparisons.sins:\
 True\
 True\
 True\
@@ -106,10 +106,10 @@ True\
 True\
 True
 
-if_else.sins:
+if_else.sins:\
 12
 
-while.sins:
+while.sins:\
 1\
 2\
 3\
