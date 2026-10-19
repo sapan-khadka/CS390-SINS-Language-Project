@@ -91,29 +91,29 @@ Additional error cases should include reading an undefined variable and dividing
 ### Actual Results
 
 arithmetic.sins:
-14 
+14\
 20
 
 variable.sins:
-15
+15\
 11
 
 comparisons.sins:
-True
-True
-True
-True
-True
+True\
+True\
+True\
+True\
+True\
 True
 
 if_else.sins:
 12
 
 while.sins:
-1
-2
-3
-4
+1\
+2\
+3\
+4\
 5
 
 
