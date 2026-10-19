@@ -78,11 +78,11 @@ The following outputs are expected results for the five sample programs. Actual 
 
 | Test program | Expected output |
 |---|---|
-| `01_arithmetic.sins` | `14`, `20` |
-| `02_variables.sins` | `15`, `11` |
-| `03_comparisons.sins` | `True` six times |
-| `04_if_else.sins` | `12` |
-| `05_while.sins` | `1`, `2`, `3`, `4`, `5`, each on a separate line |
+| `arithmetic.sins` | `14`, `20` |
+| `variable.sins` | `15`, `11` |
+| `comparisons.sins` | `True` six times |
+| `if_else.sins` | `12` |
+| `while.sins` | `1`, `2`, `3`, `4`, `5`, each on a separate line |
 
 ### Runtime Error Checks
 
@@ -90,7 +90,32 @@ Additional error cases should include reading an undefined variable and dividing
 
 ### Actual Results
 
-Complete this section after running the five programs. Record the actual output and any errors observed. Do not mark a test as passed unless it has been executed successfully.
+arithmetic.sins:\
+14\
+20
+
+variable.sins:\
+15\
+11
+
+comparisons.sins:\
+True\
+True\
+True\
+True\
+True\
+True
+
+if_else.sins:\
+12
+
+while.sins:\
+1\
+2\
+3\
+4\
+5
+
 
 ## AI Use Statement
 
