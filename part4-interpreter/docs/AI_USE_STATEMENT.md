@@ -6,23 +6,24 @@ ChatGPT
 
 ## How did your group use AI for this project milestone?
 
-Our group used ChatGPT to clarify project requirements, plan lexer and parser changes, reason about arithmetic operator precedence and comparison operators, troubleshoot Python and test issues, and organize the interpreter's documentation. Group members remained responsible for implementing, reviewing, testing, and understanding the submitted work.
+Our group used ChatGPT to help clarify the Part 4 requirements, divide responsibilities, organize the interpreter project structure, plan the environment and runtime-error classes, troubleshoot lexer-parser-interpreter integration problems, develop testing commands, review documentation, and prepare the final submission structure. Group members remained responsible for implementing, reviewing, testing, correcting, and understanding the submitted work.
 
 ## Which project components received AI assistance?
 
-AI assistance was used for planning and reviewing lexer and parser functionality, AST node design, grammar updates, test planning, runtime error handling, command-line execution guidance, and documentation. The group reviewed the implementation and checked program outputs and automated test results.
+AI assistance was used for planning the environment/symbol table, runtime-error handling, command-line interpreter runner, integration workflow, test planning, grammar review, README organization, and this AI Use Statement. AI was also used to help diagnose errors encountered while combining the lexer, parser, AST nodes, and interpreter.
 
 ## Describe at least one AI-generated suggestion, explanation, or code segment that your group modified, corrected, rejected, or improved.
 
-During testing, an existing parser test expected the error message `Expected a value after '='`, but the parser produced a different message when a declaration or assignment was missing its value. With AI-assisted troubleshooting, we identified the mismatch and updated the relevant parser error messages to match the test's expected wording. We then reran the automated test suite to verify the change. This correction changed the error-message text rather than the language's parsing behavior.
+During integration, an AI-assisted lexer edit contained an incorrectly indented EOF-token block and a mismatched closing brace. This produced an `IndentationError` and then a `SyntaxError`. The group inspected the affected lines and corrected the block so that the EOF token was appended correctly before returning the token list. We also corrected a parser error message so it matched the expected test behavior. After making these changes, we reran the complete test suite successfully.
 
 ## How did your group test or independently verify AI-assisted work?
 
-We ran the automated test suite from the `part4-interpreter` directory using `python -m pytest`. The suite passed all 19 tests. We also ran interpreter programs to check arithmetic precedence and parentheses, comparison operators, conditional execution, and while-loop behavior. For example, arithmetic tests produced `14` for `2 + 3 * 4` and `20` for `(2 + 3) * 4`. Comparison tests produced the expected `True` results, and the while-loop example printed the sequence from 1 through 5.
+We ran 19 automated tests using:
 
-We compared observed outputs with expected results to help verify the interpreter's behavior.
+`python3 -m unittest discover -s tests -p "test_*.py" -v`
+
+All 19 tests passed. We also executed five complete SINS programs covering arithmetic, variables, comparisons, `if/else`, and `while` loops. Their actual outputs matched the expected outputs. Additional manual tests confirmed correct handling of undefined variables and division by zero.
 
 ## What did your group learn from using AI during this milestone?
 
-We learned that AI suggestions must be checked against the actual codebase, existing interfaces, grammar, and tests. An explanation or code suggestion can be useful but may need modification to fit the project's implementation and test expectations. Running tests, inspecting program output, and reviewing changes helped us identify issues and verify corrections. The group remains responsible for the correctness and understanding of the submitted project.
-
+We learned that AI-generated suggestions must be checked against the existing token definitions, AST node interfaces, parser behavior, project structure, and assignment requirements. Code that appears correct can still contain indentation, syntax, naming, or integration errors. Running automated tests and complete programs after every integration change was necessary to verify and correct the work.

@@ -1,57 +1,65 @@
-(* SINS Language Grammar — Part 4 Interpreter *)
+program          = { statement } ;
 
-program = { statement } ;
+statement        = declaration
+                 | assignment
+                 | print_statement
+                 | if_statement
+                 | while_statement
+                 | block ;
 
-statement = declaration
-          | assignment
-          | print_statement
-          | if_statement
-          | while_statement
-          | block ;
+declaration      = "let", identifier, "=", expression, ";" ;
 
-declaration = "let", identifier, "=", expression, ";" ;
+assignment       = identifier, "=", expression, ";" ;
 
-assignment = identifier, "=", expression, ";" ;
+print_statement  = "print",
+                   ( "(", expression, ")" | expression ),
+                   ";" ;
 
-print_statement = "print", "(", expression, ")", ";" ;
+if_statement     = "if", "(", expression, ")", statement,
+                   [ "else", statement ] ;
 
-if_statement = "if", "(", expression, ")", block,
-               [ "else", block ] ;
+while_statement  = "while", "(", expression, ")", statement ;
 
-while_statement = "while", "(", expression, ")", block ;
+block            = "{", { statement }, "}" ;
 
-block = "{", { statement }, "}" ;
+expression       = comparison ;
 
-expression = comparison ;
+comparison       = addition,
+                   [ comparison_operator, addition ] ;
 
-comparison = addition, [ comparison_operator, addition ] ;
+comparison_operator
+                 = "=="
+                 | "!="
+                 | "<"
+                 | ">"
+                 | "<="
+                 | ">=" ;
 
-comparison_operator = "==" | "!=" | "<" | ">" | "<=" | ">=" ;
+addition         = multiplication,
+                   { ( "+" | "-" ), multiplication } ;
 
-addition = multiplication,
-           { ("+" | "-"), multiplication } ;
+multiplication   = factor,
+                   { ( "*" | "/" ), factor } ;
 
-multiplication = factor,
-                 { ("*" | "/"), factor } ;
+factor           = number
+                 | identifier
+                 | "(", expression, ")" ;
 
-factor = number
-       | identifier
-       | "(", expression, ")" ;
+identifier       = letter, { letter | digit | "_" } ;
 
-identifier = letter, { letter | digit | "_" } ;
+number           = digit, { digit },
+                   [ ".", digit, { digit } ] ;
 
-number = digit, { digit }, [ ".", digit, { digit } ] ;
+letter           = "A" | "B" | "C" | "D" | "E" | "F"
+                 | "G" | "H" | "I" | "J" | "K" | "L"
+                 | "M" | "N" | "O" | "P" | "Q" | "R"
+                 | "S" | "T" | "U" | "V" | "W" | "X"
+                 | "Y" | "Z"
+                 | "a" | "b" | "c" | "d" | "e" | "f"
+                 | "g" | "h" | "i" | "j" | "k" | "l"
+                 | "m" | "n" | "o" | "p" | "q" | "r"
+                 | "s" | "t" | "u" | "v" | "w" | "x"
+                 | "y" | "z" ;
 
-letter = "A" | "B" | "C" | "D" | "E" | "F"
-       | "G" | "H" | "I" | "J" | "K" | "L"
-       | "M" | "N" | "O" | "P" | "Q" | "R"
-       | "S" | "T" | "U" | "V" | "W" | "X"
-       | "Y" | "Z"
-       | "a" | "b" | "c" | "d" | "e" | "f"
-       | "g" | "h" | "i" | "j" | "k" | "l"
-       | "m" | "n" | "o" | "p" | "q" | "r"
-       | "s" | "t" | "u" | "v" | "w" | "x"
-       | "y" | "z" ;
-
-digit = "0" | "1" | "2" | "3" | "4"
-      | "5" | "6" | "7" | "8" | "9" ;
+digit            = "0" | "1" | "2" | "3" | "4"
+                 | "5" | "6" | "7" | "8" | "9" ;

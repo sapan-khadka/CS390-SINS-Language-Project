@@ -1,6 +1,6 @@
-# SINS Parser and Abstract Syntax Tree
+# SINS Interpreter and Control Structures
 
-This folder contains Part 3 of the SINS language project. The parser converts tokens from the updated lexer into an Abstract Syntax Tree (AST).
+This folder contains Part 4 of the SINS language project. The interpreter executes programs by traversing the Abstract Syntax Tree produced by the lexer and parser.
 
 ## Requirements
 
@@ -9,63 +9,43 @@ This folder contains Part 3 of the SINS language project. The parser converts to
 
 ## Features
 
-- Numbers and variables
-- Arithmetic expressions
-- Parenthesized expressions
-- Correct operator precedence
 - Variable declarations and assignments
+- Environment/symbol table for storing variables
+- Arithmetic operators: `+`, `-`, `*`, and `/`
+- Correct operator precedence
+- Comparison operators: `==`, `!=`, `<`, `>`, `<=`, and `>=`
 - Print statements
 - Multiple statements
-- Meaningful syntax errors with source locations
+- `if/else` control structures
+- `while` loops
+- Runtime errors for undefined variables, division by zero, and invalid operations
+- Meaningful lexer and parser errors
 
 ## Project Structure
 
 ```text
-part3-parser/
+part4-interpreter/
 ├── src/
 │   ├── __init__.py
 │   ├── token_types.py
 │   ├── lexer.py
 │   ├── ast_nodes.py
-│   └── parser.py
+│   ├── parser.py
+│   ├── environment.py
+│   ├── runtime_errors.py
+│   └── interpreter.py
 ├── tests/
-│   └── test_parser.py
+│   ├── arithmetic.sins
+│   ├── variable.sins
+│   ├── comparisons.sins
+│   ├── if_else.sins
+│   ├── while.sins
+│   ├── test_environment.py
+│   ├── test_parser.py
+│   └── README.md
 ├── docs/
-│   ├── AST_EXAMPLES.md
 │   ├── GRAMMAR.ebnf
 │   ├── AI_USE_STATEMENT.md
 │   └── README.md
-├── run_parser.py
+├── run_interpreter.py
 └── README.md
-```
-
-## Run the Parser
-
-From the `part3-parser` directory:
-
-```bash
-python3 run_parser.py path/to/program.sins
-```
-
-Example SINS program:
-
-```sins
-let x = 2 + 3 * 4;
-print x;
-```
-
-## Run the Tests
-
-From the `part3-parser` directory:
-
-```bash
-python3 -m unittest discover -s tests -p "test_*.py" -v
-```
-
-The test suite contains 12 tests covering valid statements, expressions, multiple statements, and syntax errors.
-
-## Documentation
-
-- `docs/GRAMMAR.ebnf` contains the updated parser grammar.
-- `docs/AST_EXAMPLES.md` contains AST output for three programs.
-- `docs/AI_USE_STATEMENT.md` documents the group's use and verification of AI assistance.
