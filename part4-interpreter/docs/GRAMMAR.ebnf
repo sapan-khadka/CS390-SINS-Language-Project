@@ -2,15 +2,38 @@ program          = { statement } ;
 
 statement        = declaration
                  | assignment
-                 | print_statement ;
+                 | print_statement
+                 | if_statement
+                 | while_statement
+                 | block ;
 
 declaration      = "let", identifier, "=", expression, ";" ;
 
 assignment       = identifier, "=", expression, ";" ;
 
-print_statement  = "print", expression, ";" ;
+print_statement  = "print",
+                   ( "(", expression, ")" | expression ),
+                   ";" ;
 
-expression       = addition ;
+if_statement     = "if", "(", expression, ")", statement,
+                   [ "else", statement ] ;
+
+while_statement  = "while", "(", expression, ")", statement ;
+
+block            = "{", { statement }, "}" ;
+
+expression       = comparison ;
+
+comparison       = addition,
+                   [ comparison_operator, addition ] ;
+
+comparison_operator
+                 = "=="
+                 | "!="
+                 | "<"
+                 | ">"
+                 | "<="
+                 | ">=" ;
 
 addition         = multiplication,
                    { ( "+" | "-" ), multiplication } ;
