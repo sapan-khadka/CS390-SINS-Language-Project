@@ -95,9 +95,9 @@ class Lexer:
                 f"Invalid character '{current}' "
                 f"at line {self.line}, column {self.column}"
             )
-
-               tokens.append(
+        tokens.append(
             Token(TokenType.EOF, "", self.line, self.column)
+       
         )
         return tokens
 
