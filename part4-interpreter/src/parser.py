@@ -56,7 +56,7 @@ class Parser:
         if not self._match(TokenType.ASSIGN):
             self._error(f"Expected '=' after variable name '{name}'")
         if self._check(TokenType.SEMICOLON):
-            self._error(f"Expected a value for '{name}'")
+            self._error("Expected a value after '='")
 
         value = self._parse_expression()
         if not self._match(TokenType.SEMICOLON):
@@ -69,7 +69,7 @@ class Parser:
         if not self._match(TokenType.ASSIGN):
             self._error(f"Expected '=' after variable name '{name}'")
         if self._check(TokenType.SEMICOLON):
-            self._error(f"Expected a value for '{name}'")
+            self._error("Expected a value after '='")
 
         value = self._parse_expression()
         if not self._match(TokenType.SEMICOLON):
