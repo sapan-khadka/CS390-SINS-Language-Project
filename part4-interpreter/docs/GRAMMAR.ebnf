@@ -1,42 +1,57 @@
-program          = { statement } ;
+(* SINS Language Grammar — Part 4 Interpreter *)
 
-statement        = declaration
-                 | assignment
-                 | print_statement ;
+program = { statement } ;
 
-declaration      = "let", identifier, "=", expression, ";" ;
+statement = declaration
+          | assignment
+          | print_statement
+          | if_statement
+          | while_statement
+          | block ;
 
-assignment       = identifier, "=", expression, ";" ;
+declaration = "let", identifier, "=", expression, ";" ;
 
-print_statement  = "print", expression, ";" ;
+assignment = identifier, "=", expression, ";" ;
 
-expression       = addition ;
+print_statement = "print", "(", expression, ")", ";" ;
 
-addition         = multiplication,
-                   { ( "+" | "-" ), multiplication } ;
+if_statement = "if", "(", expression, ")", block,
+               [ "else", block ] ;
 
-multiplication   = factor,
-                   { ( "*" | "/" ), factor } ;
+while_statement = "while", "(", expression, ")", block ;
 
-factor           = number
-                 | identifier
-                 | "(", expression, ")" ;
+block = "{", { statement }, "}" ;
 
-identifier       = letter, { letter | digit | "_" } ;
+expression = comparison ;
 
-number           = digit, { digit },
-                   [ ".", digit, { digit } ] ;
+comparison = addition, [ comparison_operator, addition ] ;
 
-letter           = "A" | "B" | "C" | "D" | "E" | "F"
-                 | "G" | "H" | "I" | "J" | "K" | "L"
-                 | "M" | "N" | "O" | "P" | "Q" | "R"
-                 | "S" | "T" | "U" | "V" | "W" | "X"
-                 | "Y" | "Z"
-                 | "a" | "b" | "c" | "d" | "e" | "f"
-                 | "g" | "h" | "i" | "j" | "k" | "l"
-                 | "m" | "n" | "o" | "p" | "q" | "r"
-                 | "s" | "t" | "u" | "v" | "w" | "x"
-                 | "y" | "z" ;
+comparison_operator = "==" | "!=" | "<" | ">" | "<=" | ">=" ;
 
-digit            = "0" | "1" | "2" | "3" | "4"
-                 | "5" | "6" | "7" | "8" | "9" ;
+addition = multiplication,
+           { ("+" | "-"), multiplication } ;
+
+multiplication = factor,
+                 { ("*" | "/"), factor } ;
+
+factor = number
+       | identifier
+       | "(", expression, ")" ;
+
+identifier = letter, { letter | digit | "_" } ;
+
+number = digit, { digit }, [ ".", digit, { digit } ] ;
+
+letter = "A" | "B" | "C" | "D" | "E" | "F"
+       | "G" | "H" | "I" | "J" | "K" | "L"
+       | "M" | "N" | "O" | "P" | "Q" | "R"
+       | "S" | "T" | "U" | "V" | "W" | "X"
+       | "Y" | "Z"
+       | "a" | "b" | "c" | "d" | "e" | "f"
+       | "g" | "h" | "i" | "j" | "k" | "l"
+       | "m" | "n" | "o" | "p" | "q" | "r"
+       | "s" | "t" | "u" | "v" | "w" | "x"
+       | "y" | "z" ;
+
+digit = "0" | "1" | "2" | "3" | "4"
+      | "5" | "6" | "7" | "8" | "9" ;

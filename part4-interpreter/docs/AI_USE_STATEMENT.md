@@ -6,20 +6,23 @@ ChatGPT
 
 ## How did your group use AI for this project milestone?
 
-Our group used ChatGPT to clarify the Part 3 requirements, divide responsibilities, plan the repository structure, check compatibility between the existing lexer and parser, troubleshoot Git and Python import-path issues, plan tests, and organize documentation. Group members remained responsible for implementing, reviewing, testing, and understanding the submitted work.
+Our group used ChatGPT to clarify project requirements, plan lexer and parser changes, reason about arithmetic operator precedence and comparison operators, troubleshoot Python and test issues, and organize the interpreter's documentation. Group members remained responsible for implementing, reviewing, testing, and understanding the submitted work.
 
 ## Which project components received AI assistance?
 
-AI assistance was used for repository organization, lexer-to-parser integration planning, command-line runner guidance, test planning, error-handling review, documentation organization, and this AI Use Statement. The group reviewed and tested the parser, AST implementation, grammar, tests, and generated outputs before submission.
+AI assistance was used for planning and reviewing lexer and parser functionality, AST node design, grammar updates, test planning, runtime error handling, command-line execution guidance, and documentation. The group reviewed the implementation and checked program outputs and automated test results.
 
 ## Describe at least one AI-generated suggestion, explanation, or code segment that your group modified, corrected, rejected, or improved.
 
-An initial AI-assisted organization plan assumed that parser files could be added before checking compatibility with the existing repository. The group found that the parser expected imports from the `src` package, so placing files elsewhere would cause import errors. We corrected the structure by placing the lexer, parser, AST nodes, and token definitions inside `part3-parser/src/`. We also corrected the test command: running `python3 tests/test_parser.py` caused `ModuleNotFoundError: No module named 'src'`, while running unittest discovery from the project directory correctly located the package.
+During testing, an existing parser test expected the error message `Expected a value after '='`, but the parser produced a different message when a declaration or assignment was missing its value. With AI-assisted troubleshooting, we identified the mismatch and updated the relevant parser error messages to match the test's expected wording. We then reran the automated test suite to verify the change. This correction changed the error-message text rather than the language's parsing behavior.
 
 ## How did your group test or independently verify AI-assisted work?
 
-We ran 12 automated parser tests using `python3 -m unittest discover -s tests -p "test_*.py" -v`, and all tests passed. The tests covered variable declarations, assignments, print statements, multiple statements, arithmetic expressions, parenthesized expressions, and invalid syntax. We also ran the command-line parser on three programs and inspected their AST output to verify multiplication and division precedence and the effect of parentheses.
+We ran the automated test suite from the `part4-interpreter` directory using `python -m pytest`. The suite passed all 19 tests. We also ran interpreter programs to check arithmetic precedence and parentheses, comparison operators, conditional execution, and while-loop behavior. For example, arithmetic tests produced `14` for `2 + 3 * 4` and `20` for `(2 + 3) * 4`. Comparison tests produced the expected `True` results, and the while-loop example printed the sequence from 1 through 5.
+
+We compared observed outputs with expected results to help verify the interpreter's behavior.
 
 ## What did your group learn from using AI during this milestone?
 
-We learned that AI suggestions must be checked against the project's existing interfaces, grammar, package structure, and team responsibilities. Correct-looking code can still fail because of incompatible imports or execution commands. Incremental testing, reviewing pull requests, and comparing AST output with the expected structure helped the group identify and correct these issues.
+We learned that AI suggestions must be checked against the actual codebase, existing interfaces, grammar, and tests. An explanation or code suggestion can be useful but may need modification to fit the project's implementation and test expectations. Running tests, inspecting program output, and reviewing changes helped us identify issues and verify corrections. The group remains responsible for the correctness and understanding of the submitted project.
+
