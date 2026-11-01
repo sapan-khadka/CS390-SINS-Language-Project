@@ -1,5 +1,5 @@
 
-        
+
 """Abstract syntax tree nodes for SINS."""
 
 
@@ -97,3 +97,42 @@ class WhileNode(Node):
         return (
             f"WhileNode(condition={self.condition}, body={self.body})"
         )
+
+
+class FunctionDefinitionNode(Node):
+    """Defines a user-created function."""
+
+    def __init__(self, name, parameters, body):
+        self.name = name
+        self.parameters = parameters
+        self.body = body
+
+    def __repr__(self):
+        return (
+            f"FunctionDefinitionNode(name={self.name}, "
+            f"parameters={self.parameters}, body={self.body})"
+        )
+
+
+class FunctionCallNode(Node):
+    """Calls a function with zero or more arguments."""
+
+    def __init__(self, name, arguments):
+        self.name = name
+        self.arguments = arguments
+
+    def __repr__(self):
+        return (
+            f"FunctionCallNode(name={self.name}, "
+            f"arguments={self.arguments})"
+        )
+
+
+class ReturnNode(Node):
+    """Returns a value from a function."""
+
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f"ReturnNode(value={self.value})"
