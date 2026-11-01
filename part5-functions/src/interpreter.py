@@ -1,0 +1,173 @@
+
+from .ast_nodes import (
+    ProgramNode,
+    NumberNode,
+    VariableNode,
+    BinaryOpNode,
+    AssignmentNode,
+    PrintNode,
+    BlockNode,
+    IfNode,
+    WhileNode,
+)
+from .environment import Environment
+from .runtime_errors import (
+    SINSRuntimeError,
+    DivisionByZeroError,
+    InvalidOperationError,
+)
+
+InterpreterError = SINSRuntimeError
+
+
+class Interpreter:
+    def __init__(self, environment=None):
+        self.environment = environment if environment is not None else Environment()
+
+    def interpret(self, program):
+        if not isinstance(program, ProgramNode):
+            raise TypeError("Expected a ProgramNode")
+
+        self._execute(program)
+        return self.environment.snapshot()
+
+    def execute(self, node):
+        return self._execute(node)
+
+    def evaluate(self, node):
+        return self._evaluate(node)
+
+    def _execute(self, node):
+        if isinstance(node, ProgramNode):
+            for statement in node.statements:
+                self._execute(statement)
+            return
+
+        if isinstance(node, BlockNode):
+            for statement in node.statements:
+                self._execute(statement)
+            return
+
+        if isinstance(node, AssignmentNode):
+            value = self._evaluate(node.value)
+
+            if getattr(node, "is_declaration", False):
+                self.environment.define(node.name, value)
+            else:
+                self.environment.assign(node.name, value)
+            return
+
+        if isinstance(node, PrintNode):
+            print(self._evaluate(node.expression))
+            return
+
+        if isinstance(node, IfNode):
+            condition = self._evaluate(node.condition)
+            self._check_condition(condition)
+
+            if condition:
+                self._execute(node.then_branch)
+            elif node.else_branch is not None:
+                self._execute(node.else_branch)
+            return
+
+        if isinstance(node, WhileNode):
+            while True:
+                condition = self._evaluate(node.condition)
+                self._check_condition(condition)
+
+                if not condition:
+                    break
+
+                self._execute(node.body)
+            return
+
+        raise SINSRuntimeError(
+            f"Unsupported statement: {type(node).__name__}"
+        )
+
+    def _evaluate(self, node):
+        if isinstance(node, NumberNode):
+            return node.value
+
+        if isinstance(node, VariableNode):
+            return self.environment.get(node.name)
+
+        if isinstance(node, BinaryOpNode):
+            left = self._evaluate(node.left)
+            right = self._evaluate(node.right)
+            operator = node.operator
+
+            if operator in ("==", "!=", "<", "<=", ">", ">="):
+                return self._evaluate_comparison(operator, left, right)
+
+            if operator in ("+", "-", "*", "/"):
+                return self._evaluate_arithmetic(operator, left, right)
+
+            raise InvalidOperationError(operator, left, right)
+
+        raise SINSRuntimeError(
+            f"Unsupported expression: {type(node).__name__}"
+        )
+
+    def _evaluate_arithmetic(self, operator, left, right):
+        if (
+            isinstance(left, bool)
+            or isinstance(right, bool)
+            or not isinstance(left, (int, float))
+            or not isinstance(right, (int, float))
+        ):
+            raise InvalidOperationError(operator, left, right)
+
+        if operator == "+":
+            return left + right
+
+        if operator == "-":
+            return left - right
+
+        if operator == "*":
+            return left * right
+
+        if operator == "/":
+            if right == 0:
+                raise DivisionByZeroError()
+            return left / right
+
+        raise InvalidOperationError(operator, left, right)
+
+    def _evaluate_comparison(self, operator, left, right):
+        if operator in ("==", "!="):
+            return (
+                left == right
+                if operator == "=="
+                else left != right
+            )
+
+        if (
+            isinstance(left, bool)
+            or isinstance(right, bool)
+            or not isinstance(left, (int, float))
+            or not isinstance(right, (int, float))
+        ):
+            raise InvalidOperationError(operator, left, right)
+
+        if operator == "<":
+            return left < right
+
+        if operator == "<=":
+            return left <= right
+
+        if operator == ">":
+            return left > right
+
+        if operator == ">=":
+            return left >= right
+
+        raise InvalidOperationError(operator, left, right)
+
+    @staticmethod
+    def _check_condition(value):
+        if not isinstance(value, bool):
+            raise SINSRuntimeError(
+                "Condition must evaluate to True or False"
+            )
