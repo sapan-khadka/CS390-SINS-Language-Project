@@ -10,6 +10,9 @@ from .ast_nodes import (
     BlockNode,
     IfNode,
     WhileNode,
+    FunctionDefinitionNode,
+    FunctionCallNode,
+    ReturnNode,
 )
 
 
@@ -29,6 +32,10 @@ class Parser:
         return ProgramNode(statements)
 
     def _parse_statement(self):
+        if self._match(TokenType.FUNC):
+            return self._parse_function_definition()
+        if self._match(TokenType.RETURN):
+            return self._parse_return()
         if self._match(TokenType.LET):
             return self._parse_declaration()
         if self._match(TokenType.PRINT):
@@ -40,13 +47,23 @@ class Parser:
         if self._match(TokenType.LEFT_BRACE):
             return self._parse_block()
         if self._check(TokenType.IDENTIFIER):
-            return self._parse_assignment()
+            if self._check_next(TokenType.ASSIGN):
+                return self._parse_assignment()
+            return self._parse_expression_statement()
 
         token = self._current()
         raise ParserError(
             f"Unexpected token '{token.lexeme}' "
             f"at line {token.line}, column {token.column}"
         )
+
+    def _parse_expression_statement(self):
+        expression = self._parse_expression()
+
+        if not self._match(TokenType.SEMICOLON):
+            self._error("Expected ';' after expression")
+
+        return expression
 
     def _parse_declaration(self):
         if not self._check(TokenType.IDENTIFIER):
@@ -76,8 +93,48 @@ class Parser:
             self._error(f"Expected ';' after assignment to '{name}'")
         return AssignmentNode(name, value)
 
-    
-    
+
+
+    def _parse_function_definition(self):
+        if not self._check(TokenType.IDENTIFIER):
+            self._error("Expected a function name after 'func'")
+        name = self._advance().lexeme
+
+        if not self._match(TokenType.LEFT_PAREN):
+            self._error(f"Expected '(' after function name '{name}'")
+
+        parameters = []
+
+        if not self._check(TokenType.RIGHT_PAREN):
+            while True:
+                if not self._check(TokenType.IDENTIFIER):
+                    self._error("Expected a parameter name")
+
+                parameters.append(self._advance().lexeme)
+
+                if not self._match(TokenType.COMMA):
+                    break
+
+        if not self._match(TokenType.RIGHT_PAREN):
+            self._error("Expected ')' after function parameters")
+
+        if not self._match(TokenType.LEFT_BRACE):
+            self._error("Expected '{' before function body")
+
+        body = self._parse_block()
+        return FunctionDefinitionNode(name, parameters, body)
+
+    def _parse_return(self):
+        if self._check(TokenType.SEMICOLON):
+            self._error("Expected a value after 'return'")
+
+        value = self._parse_expression()
+
+        if not self._match(TokenType.SEMICOLON):
+            self._error("Expected ';' after return value")
+
+        return ReturnNode(value)
+
     def _parse_print(self):
         parenthesized = self._match(TokenType.LEFT_PAREN)
         expression = self._parse_expression()
@@ -166,7 +223,23 @@ class Parser:
             return NumberNode(value)
 
         if self._match(TokenType.IDENTIFIER):
-            return VariableNode(self._previous().lexeme)
+            name = self._previous().lexeme
+
+            if self._match(TokenType.LEFT_PAREN):
+                arguments = []
+
+                if not self._check(TokenType.RIGHT_PAREN):
+                    while True:
+                        arguments.append(self._parse_expression())
+                        if not self._match(TokenType.COMMA):
+                            break
+
+                if not self._match(TokenType.RIGHT_PAREN):
+                    self._error("Expected ')' after function arguments")
+
+                return FunctionCallNode(name, arguments)
+
+            return VariableNode(name)
 
         if self._match(TokenType.LEFT_PAREN):
             expression = self._parse_expression()
@@ -186,6 +259,14 @@ class Parser:
                 self._advance()
                 return True
         return False
+
+    def _check_next(self, token_type):
+        next_position = self.position + 1
+
+        if next_position >= len(self.tokens):
+            return False
+
+        return self.tokens[next_position].token_type == token_type
 
     def _check(self, token_type):
         if self._at_end():
