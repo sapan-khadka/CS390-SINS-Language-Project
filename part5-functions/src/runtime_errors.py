@@ -1,3 +1,4 @@
+
 """Runtime errors for the SINS interpreter."""
 
 
@@ -11,6 +12,34 @@ class UndefinedVariableError(SINSRuntimeError):
     def __init__(self, variable_name: str):
         super().__init__(f"Undefined variable '{variable_name}'")
         self.variable_name = variable_name
+
+
+class UndefinedFunctionError(SINSRuntimeError):
+    """Raised when a program calls a function that does not exist."""
+
+    def __init__(self, function_name: str):
+        super().__init__(f"Undefined function '{function_name}'")
+        self.function_name = function_name
+
+
+class ArgumentCountError(SINSRuntimeError):
+    """Raised when a function receives the wrong number of arguments."""
+
+    def __init__(self, function_name: str, expected: int, actual: int):
+        super().__init__(
+            f"Function '{function_name}' expected {expected} "
+            f"arguments but received {actual}"
+        )
+        self.function_name = function_name
+        self.expected = expected
+        self.actual = actual
+
+
+class ReturnOutsideFunctionError(SINSRuntimeError):
+    """Raised when return is used outside a function."""
+
+    def __init__(self):
+        super().__init__("Return statement used outside a function")
 
 
 class DivisionByZeroError(SINSRuntimeError):

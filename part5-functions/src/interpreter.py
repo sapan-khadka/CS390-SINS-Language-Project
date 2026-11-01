@@ -9,20 +9,37 @@ from .ast_nodes import (
     BlockNode,
     IfNode,
     WhileNode,
+    FunctionDefinitionNode,
+    FunctionCallNode,
+    ReturnNode,
 )
 from .environment import Environment
 from .runtime_errors import (
     SINSRuntimeError,
     DivisionByZeroError,
     InvalidOperationError,
+    UndefinedFunctionError,
+    ArgumentCountError,
+    ReturnOutsideFunctionError,
 )
 
 InterpreterError = SINSRuntimeError
 
 
+class ReturnSignal(Exception):
+    """Internal signal used to return a value from a function."""
+
+    def __init__(self, value):
+        self.value = value
+
+
 class Interpreter:
     def __init__(self, environment=None):
-        self.environment = environment if environment is not None else Environment()
+        self.environment = (
+            environment if environment is not None else Environment()
+        )
+        self.functions = {}
+        self.function_depth = 0
 
     def interpret(self, program):
         if not isinstance(program, ProgramNode):
@@ -47,6 +64,24 @@ class Interpreter:
             for statement in node.statements:
                 self._execute(statement)
             return
+
+        if isinstance(node, FunctionDefinitionNode):
+            self.functions[node.name] = (
+                node,
+                self.environment
+            )
+            return
+
+        if isinstance(node, FunctionCallNode):
+            self._evaluate(node)
+            return
+
+        if isinstance(node, ReturnNode):
+            if self.function_depth == 0:
+                raise ReturnOutsideFunctionError()
+
+            value = self._evaluate(node.value)
+            raise ReturnSignal(value)
 
         if isinstance(node, AssignmentNode):
             value = self._evaluate(node.value)
@@ -93,6 +128,9 @@ class Interpreter:
         if isinstance(node, VariableNode):
             return self.environment.get(node.name)
 
+        if isinstance(node, FunctionCallNode):
+            return self._call_function(node)
+
         if isinstance(node, BinaryOpNode):
             left = self._evaluate(node.left)
             right = self._evaluate(node.right)
@@ -109,6 +147,44 @@ class Interpreter:
         raise SINSRuntimeError(
             f"Unsupported expression: {type(node).__name__}"
         )
+
+    def _call_function(self, call):
+        if call.name not in self.functions:
+            raise UndefinedFunctionError(call.name)
+
+        definition, defining_environment = self.functions[call.name]
+
+        if len(call.arguments) != len(definition.parameters):
+            raise ArgumentCountError(
+                call.name,
+                len(definition.parameters),
+                len(call.arguments)
+            )
+
+        arguments = [
+            self._evaluate(argument)
+            for argument in call.arguments
+        ]
+
+        previous_environment = self.environment
+        self.environment = defining_environment.create_child()
+
+        for parameter, argument in zip(
+            definition.parameters, arguments
+        ):
+            self.environment.define(parameter, argument)
+
+        self.function_depth += 1
+
+        try:
+            self._execute(definition.body)
+        except ReturnSignal as result:
+            return result.value
+        finally:
+            self.environment = previous_environment
+            self.function_depth -= 1
+
+        return None
 
     def _evaluate_arithmetic(self, operator, left, right):
         if (

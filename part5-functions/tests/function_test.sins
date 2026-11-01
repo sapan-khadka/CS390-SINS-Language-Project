@@ -1,0 +1,7 @@
+func add(a, b) {
+    let total = a + b;
+    return total;
+}
+
+let result = add(5, 3);
+print(result);
