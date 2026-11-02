@@ -1,0 +1,14 @@
+print('Test');
+let x = 'Test';
+print(x);
+x = 'Don\'t\n\t fear\n\t\t the\n\t\t\t Reaper';
+print(x);
+x = 'Part 5:';
+let y = 'Boobytrap the Stalemate Button!';
+print(x + ' ' + y);
+x = 'Numbers: ';
+let z = 50;
+print(x + z + ' ' + (z + 10));
+print('C:\\Program Files (x86)');
+print('You feel your "SINS" crawling up your back...');
+print('!@#$%^&*();  l`~');
