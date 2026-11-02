@@ -1,11 +1,13 @@
-# Part 4 Documentation
+# Part 5 Documentation
 
-This folder contains the supporting documentation for the SINS interpreter milestone:
+This folder contains the supporting documentation for the SINS functions, scope, and string-extension milestone:
 
-- `GRAMMAR.ebnf` — updated grammar for expressions, comparisons, blocks, `if/else`, and `while`
-- `AI_USE_STATEMENT.md` — required AI assistance and independent verification statement
+- `GRAMMAR.ebnf` — complete grammar for functions, calls, returns, control structures, expressions, and strings
+- `SCOPE.md` — explanation of global scope, local scope, lookup, assignment, and shadowing
+- `AST_EXAMPLES.md` — examples of the SINS abstract syntax tree
+- `AI_USE_STATEMENT.md` — AI assistance, corrections, and independent verification
 
-Additional project information is available in:
+See also:
 
-- `../README.md` — installation, features, structure, and running instructions
-- `../tests/README.md` — five complete SINS programs with expected and actual outputs
+- `../README.md` — features, project structure, scope representation, and running instructions
+- `../tests/README.md` — Part 5 test programs and expected outputs
