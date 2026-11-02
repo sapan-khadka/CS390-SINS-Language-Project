@@ -1,51 +1,86 @@
-# SINS Interpreter and Control Structures
+# SINS Interpreter — Part 5
 
-This folder contains Part 4 of the SINS language project. The interpreter executes programs by traversing the Abstract Syntax Tree produced by the lexer and parser.
+This folder contains the complete Part 5 SINS interpreter. It extends the Part 4 interpreter with user-defined functions, nested variable scope, and strings as the additional language feature.
 
 ## Requirements
 
 - Python 3.10 or later
-- No external packages required
+- No external packages
 
-## Features
+## Supported Features
 
 - Variable declarations and assignments
-- Environment/symbol table for storing variables
-- Arithmetic operators: `+`, `-`, `*`, and `/`
-- Correct operator precedence
-- Comparison operators: `==`, `!=`, `<`, `>`, `<=`, and `>=`
-- Print statements
-- Multiple statements
-- `if/else` control structures
-- `while` loops
-- Runtime errors for undefined variables, division by zero, and invalid operations
-- Meaningful lexer and parser errors
+- Numeric and string values
+- Arithmetic with precedence: `+`, `-`, `*`, `/`
+- String concatenation with `+`, including mixed string and numeric values
+- String escape sequences: `\'`, `\\`, `\n`, and `\t`
+- Comparisons: `==`, `!=`, `<`, `<=`, `>`, `>=`
+- `print`, `if/else`, and `while`
+- Function definitions and calls
+- Parameters and return values
+- Function-local variables
+- Global and local scope with variable shadowing
+- Runtime errors for invalid operations, undefined names, incorrect argument counts, division by zero, and invalid returns
+
+## Function Example
+
+```sins
+func add(a, b) {
+    return a + b;
+}
+
+let result = add(10, 20);
+print(result);
+```
+
+## Scope Representation
+
+Each `Environment` stores variables for one scope and may reference an enclosing environment. A function call creates a child environment. Parameters and local declarations are stored in that child. Variable lookup walks outward to the nearest enclosing scope, while declarations remain local. This allows a local variable to shadow a global variable without changing it.
+
+## Running the Interpreter
+
+Run commands from this directory:
+
+```bash
+python3 run_interpreter.py tests/function_test.sins
+python3 run_interpreter.py tests/scope_shadowing.sins
+python3 run_interpreter.py tests/local_variables.sins
+python3 run_interpreter.py tests/function_no_parameters.sins
+python3 run_interpreter.py tests/strings.sins
+```
+
+Run the automated tests with:
+
+```bash
+python3 -m unittest discover -s tests -p "test_*.py" -v
+```
+
+## Part 5 Test Programs
+
+1. `function_test.sins` — parameters, return values, and function calls
+2. `scope_shadowing.sins` — global and local variable shadowing
+3. `local_variables.sins` — function-local calculation
+4. `function_no_parameters.sins` — a function with no parameters returning a string
+5. `strings.sins` — strings, escapes, and concatenation
 
 ## Project Structure
 
 ```text
-part4-interpreter/
+part5-functions/
 ├── src/
-│   ├── __init__.py
-│   ├── token_types.py
-│   ├── lexer.py
 │   ├── ast_nodes.py
-│   ├── parser.py
 │   ├── environment.py
+│   ├── interpreter.py
+│   ├── lexer.py
+│   ├── parser.py
 │   ├── runtime_errors.py
-│   └── interpreter.py
+│   └── token_types.py
 ├── tests/
-│   ├── arithmetic.sins
-│   ├── variable.sins
-│   ├── comparisons.sins
-│   ├── if_else.sins
-│   ├── while.sins
-│   ├── test_environment.py
-│   ├── test_parser.py
-│   └── README.md
 ├── docs/
-│   ├── GRAMMAR.ebnf
 │   ├── AI_USE_STATEMENT.md
-│   └── README.md
+│   ├── GRAMMAR.ebnf
+│   └── SCOPE.md
 ├── run_interpreter.py
+├── run_parser.py
 └── README.md
+```
