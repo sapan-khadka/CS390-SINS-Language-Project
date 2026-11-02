@@ -155,29 +155,51 @@ class Lexer:
         start_line = self.line
         start_column = self.column
         self._advance()
-        start_position = self.position
 
-        while (
-            not self._at_end()
-            and self._current_character() != "'"
-        ):
+        result = []
+
+        while not self._at_end():
+            current = self._current_character()
+            if current == "\\":
+                self._advance()
+                if self._at_end():
+                    raise LexerError(
+                     f"Unterminated escape sequence at line {self.line}, column {self.column}"
+                )
+                escaped = self._current_character()
+
+                if escaped == "'":
+                    result.append("'")
+                elif escaped == "\\":
+                    result.append("\\")
+                elif escaped == "n":
+                    result.append("\n")
+                elif escaped == "t":
+                    result.append("\t")
+                else:
+                    result.append(escaped)
+
+                self._advance()
+                continue
+
+
+            if current == "'":
+                self._advance()
+                return Token(
+                    TokenType.STRING,
+                    "".join(result),
+                    start_line,
+                    start_column,
+                )
+
+            result.append(current)
             self._advance()
 
-        if self._at_end():
-            raise LexerError(
-                "Unterminated string "
-                f"at line {start_line}, column {start_column}"
-            )
-
-        value = self.source[start_position:self.position]
-        self._advance()
-
-        return Token(
-            TokenType.STRING,
-            value,
-            start_line,
-            start_column,
+        raise LexerError(
+            f"Unterminated string at line {start_line}, column {start_column}"
         )
+
+
 
     def _current_character(self):
         return self.source[self.position]

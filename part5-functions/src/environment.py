@@ -1,59 +1,38 @@
-"""Variable environments for the SINS interpreter."""
+"""Variable environment for the SINS interpreter."""
 
-from .runtime_errors import UndefinedVariableError
+from runtime_errors import UndefinedVariableError
 
 
 class Environment:
-    """Stores variables in one scope with an optional parent scope."""
+    """Stores and retrieves variables during program execution."""
 
-    def __init__(self, enclosing=None):
+    def __init__(self):
         self._values = {}
-        self.enclosing = enclosing
 
     def define(self, name: str, value):
-        """Create or replace a variable in the current scope."""
+        """Create a variable or replace an existing declaration."""
         self._values[name] = value
         return value
 
     def assign(self, name: str, value):
-        """Update the nearest scope containing the variable."""
-        if name in self._values:
-            self._values[name] = value
-            return value
+        """Update a variable that has already been declared."""
+        if name not in self._values:
+            raise UndefinedVariableError(name)
 
-        if self.enclosing is not None:
-            return self.enclosing.assign(name, value)
-
-        raise UndefinedVariableError(name)
+        self._values[name] = value
+        return value
 
     def get(self, name: str):
-        """Retrieve a variable from the nearest available scope."""
-        if name in self._values:
-            return self._values[name]
+        """Return the value stored for a variable."""
+        if name not in self._values:
+            raise UndefinedVariableError(name)
 
-        if self.enclosing is not None:
-            return self.enclosing.get(name)
-
-        raise UndefinedVariableError(name)
+        return self._values[name]
 
     def contains(self, name: str) -> bool:
-        """Return whether the variable exists in this scope chain."""
-        if name in self._values:
-            return True
-
-        if self.enclosing is not None:
-            return self.enclosing.contains(name)
-
-        return False
-
-    def contains_local(self, name: str) -> bool:
-        """Return whether the variable exists in only this scope."""
+        """Return whether a variable exists."""
         return name in self._values
 
-    def create_child(self):
-        """Create a local environment whose parent is this environment."""
-        return Environment(enclosing=self)
-
     def snapshot(self) -> dict:
-        """Return a copy of variables defined in the current scope."""
+        """Return a copy of the current symbol table."""
         return dict(self._values)

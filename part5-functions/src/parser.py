@@ -10,6 +10,7 @@ from .ast_nodes import (
     BlockNode,
     IfNode,
     WhileNode,
+    StringNode
 )
 
 
@@ -165,6 +166,9 @@ class Parser:
             )
             return NumberNode(value)
 
+        if self._match(TokenType.STRING):
+            return StringNode(self._previous().lexeme)
+
         if self._match(TokenType.IDENTIFIER):
             return VariableNode(self._previous().lexeme)
 
@@ -179,6 +183,11 @@ class Parser:
             f"Expected an expression, but found '{token.lexeme}' "
             f"at line {token.line}, column {token.column}"
         )
+
+
+
+
+
 
     def _match(self, *token_types):
         for token_type in token_types:

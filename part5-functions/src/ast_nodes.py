@@ -97,3 +97,10 @@ class WhileNode(Node):
         return (
             f"WhileNode(condition={self.condition}, body={self.body})"
         )
+
+class StringNode(Node):
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f"StringNode(value={self.value})"
