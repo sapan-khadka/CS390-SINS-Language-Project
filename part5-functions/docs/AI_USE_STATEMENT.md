@@ -1,29 +1,40 @@
-# AI USE STATEMENT
+# AI Use Statement — Part 5
 
-## AI Tool(s) Used
+## AI Tool Used
 
 ChatGPT
 
-## How did your group use AI for this project milestone?
+## How AI Was Used
 
-Our group used ChatGPT to help clarify the Part 4 requirements, divide responsibilities, organize the interpreter project structure, plan the environment and runtime-error classes, troubleshoot lexer-parser-interpreter integration problems, develop testing commands, review documentation, and prepare the final submission structure. Group members remained responsible for implementing, reviewing, testing, correcting, and understanding the submitted work.
+The group used ChatGPT to clarify the Part 5 requirements, divide responsibilities, plan nested environments, review function and string integration, diagnose parser indentation problems, develop test commands, resolve Git merge conflicts, and organize the final documentation. Group members implemented, reviewed, tested, corrected, and explained the submitted work.
 
-## Which project components received AI assistance?
+## Components That Received AI Assistance
 
-AI assistance was used for planning the environment/symbol table, runtime-error handling, command-line interpreter runner, integration workflow, test planning, grammar review, README organization, and this AI Use Statement. AI was also used to help diagnose errors encountered while combining the lexer, parser, AST nodes, and interpreter.
+AI assistance was used while planning or reviewing:
 
-## Describe at least one AI-generated suggestion, explanation, or code segment that your group modified, corrected, rejected, or improved.
+- Parent-linked environments and local scope
+- Function AST nodes, parsing, calls, and returns
+- String parsing, escape sequences, and concatenation
+- Integration and Git conflict-resolution steps
+- Part 5 test planning
+- EBNF, README, and submission organization
 
-During integration, an AI-assisted lexer edit contained an incorrectly indented EOF-token block and a mismatched closing brace. This produced an `IndentationError` and then a `SyntaxError`. The group inspected the affected lines and corrected the block so that the EOF token was appended correctly before returning the token list. We also corrected a parser error message so it matched the expected test behavior. After making these changes, we reran the complete test suite successfully.
+## Suggestion the Group Verified and Corrected
 
-## How did your group test or independently verify AI-assisted work?
+During string integration, an AI-generated suggestion discussed changing the condition for concatenation from `and` to `or`. The group verified that this change alone was insufficient in Python because adding a string directly to a number still raises a type error. The implementation was corrected to detect whether either operand is a string and then explicitly convert both operands with `str()` before concatenating them.
 
-We ran 19 automated tests using:
+The group also rejected automatic “accept both changes” conflict resolution for the parser, interpreter, and AST files. Accepting both complete versions would have duplicated code. Instead, the group preserved the newer function implementation and manually integrated only the required string additions.
 
-`python3 -m unittest discover -s tests -p "test_*.py" -v`
+## Independent Verification
 
-All 19 tests passed. We also executed five complete SINS programs covering arithmetic, variables, comparisons, `if/else`, and `while` loops. Their actual outputs matched the expected outputs. Additional manual tests confirmed correct handling of undefined variables and division by zero.
+The group ran:
 
-## What did your group learn from using AI during this milestone?
+```bash
+python3 -m unittest discover -s tests -p "test_*.py" -v
+```
 
-We learned that AI-generated suggestions must be checked against the existing token definitions, AST node interfaces, parser behavior, project structure, and assignment requirements. Code that appears correct can still contain indentation, syntax, naming, or integration errors. Running automated tests and complete programs after every integration change was necessary to verify and correct the work.
+All 32 automated tests passed. The group also ran five Part 5 programs covering function parameters and returns, scope shadowing, local variables, a zero-parameter function, strings, escape sequences, and concatenation. The observed outputs matched the expected results.
+
+## What the Group Learned
+
+AI suggestions must be checked against the current AST interfaces, parser rules, environment behavior, and Python runtime semantics. Small-looking edits can remove newer team contributions or introduce type errors. Reviewing diffs and rerunning both unit tests and complete programs after integration were essential.
