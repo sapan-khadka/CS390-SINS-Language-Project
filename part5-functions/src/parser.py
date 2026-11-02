@@ -13,6 +13,7 @@ from .ast_nodes import (
     FunctionDefinitionNode,
     FunctionCallNode,
     ReturnNode,
+    StringNode,
 )
 
 
@@ -221,6 +222,9 @@ class Parser:
                 else int(token.lexeme)
             )
             return NumberNode(value)
+
+        if self._match(TokenType.STRING):
+            return StringNode(self._previous().lexeme)
 
         if self._match(TokenType.IDENTIFIER):
             name = self._previous().lexeme

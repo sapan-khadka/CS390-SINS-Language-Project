@@ -42,8 +42,49 @@ multiplication   = factor,
                    { ( "*" | "/" ), factor } ;
 
 factor           = number
+                 | string
                  | identifier
                  | "(", expression, ")" ;
+
+string           = "'", { string_character | escape_sequence }, "'" ;
+
+string_character = letter | digit | symbol ;
+
+escape_sequence  = "\\'" | "\\\\" | "\\n" | "\\t" ;
+
+symbol           = "." 
+                 | "," 
+                 | '"' 
+                 | " "
+                 | "/"
+                 | "?"
+                 | "!"
+                 | "@"
+                 | "#"
+                 | "$"
+                 | "%"
+                 | "^"
+                 | "&"
+                 | "*"
+                 | "("
+                 | ")"
+                 | "+"
+                 | "="
+                 | "-"
+                 | "_"
+                 | "["
+                 | "]"
+                 | "{"
+                 | "}"
+                 | "|"
+                 | ";"
+                 | ":"
+                 | "<"
+                 | ">"
+                 | "  "
+                 | "~"
+                 | "`" ;
+                
 
 identifier       = letter, { letter | digit | "_" } ;
 

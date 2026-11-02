@@ -12,6 +12,7 @@ from .ast_nodes import (
     FunctionDefinitionNode,
     FunctionCallNode,
     ReturnNode,
+    StringNode,
 )
 from .environment import Environment
 from .runtime_errors import (
@@ -125,6 +126,9 @@ class Interpreter:
         if isinstance(node, NumberNode):
             return node.value
 
+        if isinstance(node, StringNode):
+            return node.value
+
         if isinstance(node, VariableNode):
             return self.environment.get(node.name)
 
@@ -187,6 +191,11 @@ class Interpreter:
         return None
 
     def _evaluate_arithmetic(self, operator, left, right):
+        if operator == "+" and (
+            isinstance(left, str) or isinstance(right, str)
+        ):
+            return str(left) + str(right)
+
         if (
             isinstance(left, bool)
             or isinstance(right, bool)

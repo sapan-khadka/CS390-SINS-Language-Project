@@ -136,3 +136,11 @@ class ReturnNode(Node):
 
     def __repr__(self):
         return f"ReturnNode(value={self.value})"
+
+
+class StringNode(Node):
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return f"StringNode(value={self.value})"
