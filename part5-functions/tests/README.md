@@ -1,126 +1,74 @@
-# SINS Language — Part 4: Interpreter
+# Part 5 Test Programs
 
-## Overview
+Run these commands from the `part5-functions` directory.
 
-This project implements an interpreter for the SINS programming language. It builds on the lexer and parser to execute programs containing variables, arithmetic expressions, comparisons, print statements, conditional branches, and loops.
-
-## Features
-
-- Variable declarations using `let`.
-- Assignment to previously declared variables.
-- Arithmetic operations: `+`, `-`, `*`, `/`.
-- Arithmetic precedence and parentheses.
-- Comparison operators: `==`, `!=`, `<`, `>`, `<=`, `>=`.
-- `print(expression);` statements.
-- `if`/`else` conditional statements.
-- `while` loops.
-- Runtime errors for undefined variables, division by zero, and invalid operations.
-
-## Project Structure
-
-- `src/ast_nodes.py` — abstract syntax tree node definitions.
-- `src/environment.py` — variable storage and lookup.
-- `src/interpreter.py` — AST evaluation and execution.
-- `src/lexer.py` — lexical analysis.
-- `src/parser.py` — syntax analysis and AST construction.
-- `src/runtime_errors.py` — runtime error definitions.
-- `src/token_types.py` — token definitions.
-- `tests/` — sample SINS programs.
-- `run_parser.py` — program entry point.
-- `docs/` — project documentation.
-
-## How to Run
-
-Run these commands from the `part4-interpreter` directory:
+## Automated Tests
 
 ```bash
-python3 run_parser.py tests/01_arithmetic.sins
-python3 run_parser.py tests/02_variables.sins
-python3 run_parser.py tests/03_comparisons.sins
-python3 run_parser.py tests/04_if_else.sins
-python3 run_parser.py tests/05_while.sins
+python3 -m unittest discover -s tests -p "test_*.py" -v
 ```
 
-The interpreter prints program output to standard output. Lexical, syntax, and runtime errors are reported to standard output with a nonzero exit status.
+Expected result: all 32 tests pass.
 
-## Grammar
+## Required Part 5 Programs
 
-The following EBNF describes the core syntax supported by the assignment.
+### 1. Functions, parameters, and returns
 
-```ebnf
-program       = { statement } ;
-statement     = declaration
-              | assignment
-              | print_stmt
-              | if_stmt
-              | while_stmt
-              | block ;
-
-declaration   = "let", identifier, "=", expression, ";" ;
-assignment    = identifier, "=", expression, ";" ;
-print_stmt    = "print", "(", expression, ")", ";" ;
-if_stmt       = "if", "(", expression, ")", statement,
-                [ "else", statement ] ;
-while_stmt    = "while", "(", expression, ")", statement ;
-block         = "{", { statement }, "}" ;
-
-expression    = comparison ;
-comparison    = addition, [ comparison_op, addition ] ;
-comparison_op = "==" | "!=" | "<" | ">" | "<=" | ">=" ;
-addition      = multiplication, { ("+" | "-"), multiplication } ;
-multiplication = factor, { ("*" | "/"), factor } ;
-factor        = number | identifier | "(", expression, ")" ;
+```bash
+python3 run_interpreter.py tests/function_test.sins
 ```
 
-## Test Programs and Results
+Expected output:
 
-The following outputs are expected results for the five sample programs. Actual results must be confirmed by running the programs.
+```text
+8
+```
 
-| Test program | Expected output |
-|---|---|
-| `arithmetic.sins` | `14`, `20` |
-| `variable.sins` | `15`, `11` |
-| `comparisons.sins` | `True` six times |
-| `if_else.sins` | `12` |
-| `while.sins` | `1`, `2`, `3`, `4`, `5`, each on a separate line |
+### 2. Global and local scope
 
-### Runtime Error Checks
+```bash
+python3 run_interpreter.py tests/scope_shadowing.sins
+```
 
-Additional error cases should include reading an undefined variable and dividing by zero. The interpreter should report a runtime error instead of silently returning an incorrect result.
+Expected output:
 
-### Actual Results
-
-arithmetic.sins:\
-14\
+```text
 20
+10
+```
 
-variable.sins:\
-15\
-11
+### 3. Function-local variables
 
-comparisons.sins:\
-True\
-True\
-True\
-True\
-True\
-True
+```bash
+python3 run_interpreter.py tests/local_variables.sins
+```
 
-if_else.sins:\
-12
+Expected output:
 
-while.sins:\
-1\
-2\
-3\
-4\
-5
+```text
+24
+```
 
+### 4. Function without parameters
 
-## AI Use Statement
+```bash
+python3 run_interpreter.py tests/function_no_parameters.sins
+```
 
-AI assistance was used to help review the interpreter design, AST node structure, parser precedence, variable environment, and test cases. Suggestions were checked against the existing project files and adapted to the project's token names, imports, and runtime error classes. The team should document which suggestions it verified, modified, or rejected and independently verify the resulting implementation before submission.
+Expected output:
 
-## Limitations
+```text
+Hello from SINS
+```
 
-The listed test outputs are expected results until execution confirms them. Any unsupported language features or remaining errors should be documented based on actual testing.
+### 5. String extension
+
+```bash
+python3 run_interpreter.py tests/strings.sins
+```
+
+This program demonstrates string literals, escaped apostrophes, backslashes, newlines, tabs, string concatenation, and mixed string-number concatenation.
+
+## Legacy Regression Programs
+
+The existing arithmetic, variable, comparison, `if/else`, and `while` programs remain in this directory to verify that Part 5 did not break earlier features.
