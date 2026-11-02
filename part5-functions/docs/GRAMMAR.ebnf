@@ -1,106 +1,83 @@
-program          = { statement } ;
+program             = { statement } ;
 
-statement        = declaration
-                 | assignment
-                 | print_statement
-                 | if_statement
-                 | while_statement
-                 | block ;
+statement           = function_definition
+                    | return_statement
+                    | declaration
+                    | assignment
+                    | print_statement
+                    | if_statement
+                    | while_statement
+                    | expression_statement
+                    | block ;
 
-declaration      = "let", identifier, "=", expression, ";" ;
+function_definition = "func", identifier, "(", [ parameter_list ], ")", block ;
 
-assignment       = identifier, "=", expression, ";" ;
+parameter_list      = identifier, { ",", identifier } ;
 
-print_statement  = "print",
-                   ( "(", expression, ")" | expression ),
-                   ";" ;
+return_statement    = "return", expression, ";" ;
 
-if_statement     = "if", "(", expression, ")", statement,
-                   [ "else", statement ] ;
+declaration         = "let", identifier, "=", expression, ";" ;
 
-while_statement  = "while", "(", expression, ")", statement ;
+assignment          = identifier, "=", expression, ";" ;
 
-block            = "{", { statement }, "}" ;
+print_statement     = "print",
+                      ( "(", expression, ")" | expression ),
+                      ";" ;
 
-expression       = comparison ;
+if_statement        = "if", "(", expression, ")", statement,
+                      [ "else", statement ] ;
 
-comparison       = addition,
-                   [ comparison_operator, addition ] ;
+while_statement     = "while", "(", expression, ")", statement ;
 
-comparison_operator
-                 = "=="
-                 | "!="
-                 | "<"
-                 | ">"
-                 | "<="
-                 | ">=" ;
+expression_statement
+                    = expression, ";" ;
 
-addition         = multiplication,
-                   { ( "+" | "-" ), multiplication } ;
+block               = "{", { statement }, "}" ;
 
-multiplication   = factor,
-                   { ( "*" | "/" ), factor } ;
+expression          = comparison ;
 
-factor           = number
-                 | string
-                 | identifier
-                 | "(", expression, ")" ;
+comparison          = addition,
+                      [ comparison_operator, addition ] ;
 
-string           = "'", { string_character | escape_sequence }, "'" ;
+comparison_operator = "==" | "!=" | "<" | "<=" | ">" | ">=" ;
 
-string_character = letter | digit | symbol ;
+addition            = multiplication,
+                      { ( "+" | "-" ), multiplication } ;
 
-escape_sequence  = "\\'" | "\\\\" | "\\n" | "\\t" ;
+multiplication      = factor,
+                      { ( "*" | "/" ), factor } ;
 
-symbol           = "." 
-                 | "," 
-                 | '"' 
-                 | " "
-                 | "/"
-                 | "?"
-                 | "!"
-                 | "@"
-                 | "#"
-                 | "$"
-                 | "%"
-                 | "^"
-                 | "&"
-                 | "*"
-                 | "("
-                 | ")"
-                 | "+"
-                 | "="
-                 | "-"
-                 | "_"
-                 | "["
-                 | "]"
-                 | "{"
-                 | "}"
-                 | "|"
-                 | ";"
-                 | ":"
-                 | "<"
-                 | ">"
-                 | "  "
-                 | "~"
-                 | "`" ;
-                
+factor              = number
+                    | string
+                    | function_call
+                    | identifier
+                    | "(", expression, ")" ;
 
-identifier       = letter, { letter | digit | "_" } ;
+function_call       = identifier, "(", [ argument_list ], ")" ;
 
-number           = digit, { digit },
-                   [ ".", digit, { digit } ] ;
+argument_list       = expression, { ",", expression } ;
 
-letter           = "A" | "B" | "C" | "D" | "E" | "F"
-                 | "G" | "H" | "I" | "J" | "K" | "L"
-                 | "M" | "N" | "O" | "P" | "Q" | "R"
-                 | "S" | "T" | "U" | "V" | "W" | "X"
-                 | "Y" | "Z"
-                 | "a" | "b" | "c" | "d" | "e" | "f"
-                 | "g" | "h" | "i" | "j" | "k" | "l"
-                 | "m" | "n" | "o" | "p" | "q" | "r"
-                 | "s" | "t" | "u" | "v" | "w" | "x"
-                 | "y" | "z" ;
+string              = "'", { string_character | escape_sequence }, "'" ;
 
-digit            = "0" | "1" | "2" | "3" | "4"
-                 | "5" | "6" | "7" | "8" | "9" ;
+escape_sequence     = "\\'" | "\\\\" | "\\n" | "\\t" ;
+
+string_character    = ? any character except "'" and "\" ? ;
+
+identifier          = letter, { letter | digit | "_" } ;
+
+number              = digit, { digit },
+                      [ ".", digit, { digit } ] ;
+
+letter              = "A" | "B" | "C" | "D" | "E" | "F"
+                    | "G" | "H" | "I" | "J" | "K" | "L"
+                    | "M" | "N" | "O" | "P" | "Q" | "R"
+                    | "S" | "T" | "U" | "V" | "W" | "X"
+                    | "Y" | "Z"
+                    | "a" | "b" | "c" | "d" | "e" | "f"
+                    | "g" | "h" | "i" | "j" | "k" | "l"
+                    | "m" | "n" | "o" | "p" | "q" | "r"
+                    | "s" | "t" | "u" | "v" | "w" | "x"
+                    | "y" | "z" ;
+
+digit               = "0" | "1" | "2" | "3" | "4"
+                    | "5" | "6" | "7" | "8" | "9" ;

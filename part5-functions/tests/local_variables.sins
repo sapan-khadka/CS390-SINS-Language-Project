@@ -1,0 +1,7 @@
+func calculate_total(price, quantity) {
+    let subtotal = price * quantity;
+    return subtotal;
+}
+
+let total = calculate_total(8, 3);
+print(total);

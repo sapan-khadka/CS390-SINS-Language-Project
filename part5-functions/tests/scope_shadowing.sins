@@ -1,0 +1,9 @@
+let x = 10;
+
+func show_local() {
+    let x = 20;
+    print(x);
+}
+
+show_local();
+print(x);

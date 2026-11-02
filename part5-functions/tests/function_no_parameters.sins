@@ -1,0 +1,6 @@
+func greeting() {
+    let message = 'Hello from SINS';
+    return message;
+}
+
+print(greeting());
