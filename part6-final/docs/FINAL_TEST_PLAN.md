@@ -30,3 +30,43 @@ Run from `part5-functions`:
 
 ```bash
 python3 -m unittest discover -s tests -p "test_*.py" -v
+```
+
+All automated tests must report `OK`.
+
+## Complete Program Testing
+
+Run from `part5-functions`:
+
+```bash
+find tests -maxdepth 1 -type f -name '[0-9][0-9]_*.sins' -print | sort |
+while IFS= read -r file; do
+    echo "===== $file ====="
+    python3 run_interpreter.py "$file"
+done
+```
+
+## Error Testing
+
+Run each error program separately:
+
+```bash
+python3 run_interpreter.py tests/error_invalid_character.sins
+python3 run_interpreter.py tests/error_invalid_syntax.sins
+python3 run_interpreter.py tests/error_undefined_variable.sins
+python3 run_interpreter.py tests/error_division_by_zero.sins
+```
+
+Each command should display a clear error message. An intentional error result is considered successful when the correct error is detected and explained.
+
+## Final Verification
+
+Before creating the submission ZIP:
+
+- Confirm all ten complete programs exist.
+- Confirm all four intentional-error programs exist.
+- Confirm all automated tests pass.
+- Compare every program’s output with its expected result.
+- Update each `Pending` status to `Passed`.
+- Confirm the README contains reproducible commands.
+- Confirm the report accurately states the final test results.
