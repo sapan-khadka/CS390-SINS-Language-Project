@@ -1,0 +1,4 @@
+let name = 'SINS';
+print('Hello from SINS');
+print(name);
+print(5 + 7);
