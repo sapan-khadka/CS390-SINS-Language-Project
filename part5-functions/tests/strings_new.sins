@@ -1,0 +1,32 @@
+let string = '';
+
+func stringBuilding(input) {
+    let builder = 'H';
+    input = input + builder;
+    builder = 'e';
+    input = input + builder;
+    builder = 'l';
+    input = input + builder;
+    builder = 'l';
+    input = input + builder;
+    builder = 'o';
+    input = input + builder;
+    builder = '\n';
+    input = input + builder;
+    builder = 'W';
+    input = input + builder;
+    builder = 'o';
+    input = input + builder;
+    builder = 'r';
+    input = input + builder;
+    builder = 'l';
+    input = input + builder;
+    builder = 'd';
+    input = input + builder;
+    builder = '!';
+    input = input + builder;
+    return input;
+}
+
+string = stringBuilding(string);
+print(string);
