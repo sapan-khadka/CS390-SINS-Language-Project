@@ -18,16 +18,35 @@ Arithmetic operators follow standard mathematical precedence. Multiplication and
 
 Variables are declared with the `let` keyword. Functions can accept parameters, create local variables, and return values. The environment uses nested scopes so local declarations do not incorrectly replace unrelated global variables. Strings were added as the extension because they make programs more expressive and allow meaningful text output, escape sequences, and concatenation.
 ## 3. BNF/EBNF Grammar
-[Swopnil's section]
+The SINS EBNF grammar describes the valid structure of programs. It defines statements such as variable declarations, assignments, print statements, conditionals, loops, function definitions, returns, blocks, and expressions.
+
+Expressions are divided into precedence levels:
+
+- Comparison: equality and relational operators.
+- Addition: addition and subtraction.
+- Multiplication: multiplication and division.
+- Factor: numbers, strings, variables, function calls, and parenthesized expressions.
+
+This layered grammar makes operator precedence clear and helps the parser construct the correct AST.
 
 ## 4. Lexer Design
-[Swopnil's section]
+The SINS lexer converts source code into tokens that can be processed by the parser. It recognizes keywords such as let, print, if, else, while, func, and return. It also recognizes identifiers, integer and decimal numbers, strings, arithmetic operators, comparison operators, and punctuation.
+
+The lexer tracks line and column positions to help identify lexical errors. It supports escaped characters in strings, including newline, tab, quote, and backslash. It appends an end-of-file token after processing the source code.
 
 ## 5. Parser Design
-[Swopnil's section]
+The SINS parser reads the tokens produced by the lexer and checks whether the program follows the language grammar. It supports variable declarations, assignments, print statements, blocks, conditionals, loops, function definitions, function calls, and return statements.
+
+Expressions are parsed using separate precedence levels. Multiplication and division have higher precedence than addition and subtraction. Comparison expressions are handled at a separate level. Parentheses allow programmers to control evaluation order.
+
+For example, 2 + 3 * 4 is interpreted as 2 + (3 * 4), producing 14.
 
 ## 6. AST Structure
-[Swopnil's section]
+The Abstract Syntax Tree represents the logical structure of a program after parsing. It removes the need to preserve the original whitespace and formatting of the source code.
+
+The implementation includes nodes for programs, numbers, strings, variables, binary operations, assignments, print statements, blocks, if statements, while loops, function definitions, function calls, and return statements.
+
+For the expression 2 + 3 * 4, the AST has addition as its root operation. The left child represents 2, while the right child represents the multiplication of 3 and 4. This structure preserves operator precedence.
 
 ## 7. Interpreter Implementation
 [Nathaniel's section]

@@ -51,6 +51,12 @@ class Parser:
             if self._check_next(TokenType.ASSIGN):
                 return self._parse_assignment()
             return self._parse_expression_statement()
+        if (
+            self._check(TokenType.NUMBER)
+            or self._check(TokenType.STRING)
+            or self._check(TokenType.LEFT_PAREN)
+        ):
+            return self._parse_expression_statement()
 
         token = self._current()
         raise ParserError(

@@ -63,7 +63,8 @@ escape_sequence     = "\\'" | "\\\\" | "\\n" | "\\t" ;
 
 string_character    = ? any character except "'" and "\" ? ;
 
-identifier          = letter, { letter | digit | "_" } ;
+identifier          = ( letter | "_" ),
+                      { letter | digit | "_" } ;
 
 number              = digit, { digit },
                       [ ".", digit, { digit } ] ;
