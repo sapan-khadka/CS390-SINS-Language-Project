@@ -49,10 +49,10 @@ The implementation includes nodes for programs, numbers, strings, variables, bin
 For the expression 2 + 3 * 4, the AST has addition as its root operation. The left child represents 2, while the right child represents the multiplication of 3 and 4. This structure preserves operator precedence.
 
 ## 7. Interpreter Implementation
-[Nathaniel's section]
+The interpreter part of the SINS programming language is responsible for executing the SINS program after it is processed by the lexer and parser. It takes the program’s Abstract Syntax Tree, or AST for short, and executes the statements in the order they appear. The interpreter handles variable declarations and assignments, print statements, arithmetic operations, comparisons, and control-flow statements.  The interpreter also supports function calls and return statements. When the interpreter encounters an if/else statement, it will evaluate the condition and execute the matching branch. When the interpreter encounters a while loop, it will continue to evaluate the condition and execute the code body until the condition becomes false. The interpreter also evaluates expressions. This includes mathematical operations and comparisons. The interpreter checks that the conditions used in if/else statements and while loops evaluate to Boolean values. If an operation cannot be completed, the interpreter raises an appropriate runtime error. 
 
 ## 8. Environment and Symbol Table
-[Nathaniel's section]
+The environment is the part of the SINS programming language that is responsible for storing and managing variables while the language executes. The environment stores variable names and their associated values so that the interpreter can retrieve or update them as needed. SINS uses nested environments to support each variable scope. Each environment can have an enclosing environment, which allows a function or local scope to access variables from an outer scope. When a variable is accessed, the environment searches the current scope first, then its enclosing scopes. Variable declarations are stored in the current environment. Assignments update the nearest existing variable with the matching name. This, in turn, allows local variables to shadow global variables without changing the original global value. The environment also reports an error when a program tries to access or assign a variable that has not been defined.
 
 ## 9. Functions and Scope
 [Ian's section]
@@ -61,7 +61,7 @@ For the expression 2 + 3 * 4, the AST has addition as its root operation. The le
 [Ian's section]
 
 ## 11. Error Handling
-[Nathaniel's section]
+The SINS programming language includes error handling to help identify problems that occur while a program is being processed or executed. Errors are separated into different categories so the user can pinpoint what went wrong more easily. Lexical errors occur when the lexer encounters an invalid character or improperly formatted input. For example, using an unsupported character such as @ produces a lexical error that will include the line and column where the problem occurred. Syntax errors occur when the parser finds code that does not follow the SINS language grammar. For example, omitting a required semicolon produces a syntax error indicating where the parser expects it. Runtime errors occur during program execution. These include problems such as using an undefined variable or function, providing the wrong number of function arguments, dividing by zero, or returning outside of a function. The interpreter and program runner handle these errors and display messages describing the problem, rather than allowing the program to fail without explanation. 
 
 ## 12. Testing Strategy
 The testing strategy combines automated unit tests with complete SINS source programs. Unit tests verify individual components such as the environment, scope behavior, parser, and function syntax. Complete programs verify that the entire pipeline works correctly from source code through final output.
