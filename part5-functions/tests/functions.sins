@@ -3,7 +3,7 @@ func factorial(input) {
     let x = input - 1;
 
     while (x > 0) {
-        input = input + x;
+        input = input * x;
         x = x - 1;
     }
 

@@ -30,3 +30,18 @@ func stringBuilding(input) {
 
 string = stringBuilding(string);
 print(string);
+
+print('Test');
+let x = 'Test';
+print(x);
+x = 'Don\'t\n\t fear\n\t\t the\n\t\t\t New\n\t\t\t\t Reaper';
+print(x);
+x = 'Part 6:';
+let y = 'Present the thing to an audience.';
+print(x + ' ' + y);
+x = 'Numbers: ';
+let z = 50;
+print(x + z + ' ' + (z + 10));
+print('C:\\Program Files (x86)');
+print('You feel your "SINS" crawling up your back...');
+print('!@#$%^&*();  l`~');

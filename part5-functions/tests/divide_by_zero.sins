@@ -1,4 +1,4 @@
-let helpMe = 0;
-let ohNo = 10;
+let zero = 0;
+let ten = 10;
 
-let ohFck = ohNo / helpMe;
+let divideByZero = ten / zero;
