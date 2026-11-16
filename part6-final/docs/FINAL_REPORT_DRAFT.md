@@ -60,9 +60,9 @@ In SINS, you can create a function in order to isolate segments of code into nea
 ## 10. String Extension
 In SINS, strings are created by surrounding lines of text, numbers, or symbols in single-quotes, 'like this'. Setting a variable to a string is as easy as declaring any other variable. Strings have several escape sequences which allow for otherwise-unusable characters and formatting.
 
-`\'` allows you to add a single-quote to a string without terminating said string.
+`\'` allows you to add a single-quote to the string without terminating said string.
 
-`\\` allows you to add a backslash into strings.
+`\\` allows you to add a backslash into the string.
 
 `\n` creates a new line in the string, allowing for multi-line strings.
 
