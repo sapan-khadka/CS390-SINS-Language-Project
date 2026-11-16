@@ -66,7 +66,7 @@ In SINS, strings are created by surrounding lines of text, numbers, or symbols i
 
 `\n` creates a new line in the string, allowing for multi-line strings.
 
-`\t` adds a large space to a string, similar to pressing tab in some text editors.
+`\t` adds a large space to the string, similar to pressing tab in some text editors.
 
 Strings can also be concatenated via the '+' operator. You can do this via adding string variables together as if they were numbers, or you can concatenate strings together in a print() statement. You can also add the value of other types of variables to strings this way as well, and it will concatenate the values to the string as if they themselves were strings.
 
