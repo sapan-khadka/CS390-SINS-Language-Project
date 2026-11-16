@@ -68,7 +68,7 @@ In SINS, strings are created by surrounding lines of text, numbers, or symbols i
 
 `\t` adds a large space to the string, similar to pressing tab in some text editors.
 
-Strings can also be concatenated via the '+' operator. You can do this via adding string variables together as if they were numbers, or you can concatenate strings together in a print() statement. You can also add the value of other types of variables to strings this way as well, and it will concatenate the values to the string as if they themselves were strings.
+Strings can also be concatenated via the `+` operator. You can do this via adding string variables together as if they were numbers, or you can concatenate strings together in a `print` statement. You can also add the value of other types of variables to strings this way as well, and it will concatenate the values to the string as if they themselves were strings.
 
 ## 11. Error Handling
 [Nathaniel's section]
