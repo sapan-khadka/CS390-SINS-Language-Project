@@ -55,10 +55,20 @@ The interpreter part of the SINS programming language is responsible for executi
 The environment is the part of the SINS programming language that is responsible for storing and managing variables while the language executes. The environment stores variable names and their associated values so that the interpreter can retrieve or update them as needed. SINS uses nested environments to support each variable scope. Each environment can have an enclosing environment, which allows a function or local scope to access variables from an outer scope. When a variable is accessed, the environment searches the current scope first, then its enclosing scopes. Variable declarations are stored in the current environment. Assignments update the nearest existing variable with the matching name. This, in turn, allows local variables to shadow global variables without changing the original global value. The environment also reports an error when a program tries to access or assign a variable that has not been defined.
 
 ## 9. Functions and Scope
-[Ian's section]
+In SINS, you can create a function in order to isolate segments of code into neat, compact packages. These functions can also have input arguments to allow for complex interactions, such as creating mathematical algorithms with input numbers. However, said input arguments are not required, and a function can simply be an isolated block of code that can be called multiple times. Variables declared in functions do not directly interact with variables declared outside of functions, even if said variables have the same name. However, variables from outside of functions can be directly manipulated inside of said functions as long as the code to reference said outside variable comes before a local declaration shadows it.
 
 ## 10. String Extension
-[Ian's section]
+In SINS, strings are created by surrounding lines of text, numbers, or symbols in single-quotes, 'like this'. Setting a variable to a string is as easy as declaring any other variable. Strings have several escape sequences which allow for otherwise-unusable characters and formatting.
+
+`\'` allows you to add a single-quote to the string without terminating said string.
+
+`\\` allows you to add a backslash into the string.
+
+`\n` creates a new line in the string, allowing for multi-line strings.
+
+`\t` adds a large space to the string, similar to pressing tab in some text editors.
+
+Strings can also be concatenated via the `+` operator. You can do this via adding string variables together as if they were numbers, or you can concatenate strings together in a `print` statement. You can also add the value of other types of variables to strings this way as well, and it will concatenate the values to the string as if they themselves were strings.
 
 ## 11. Error Handling
 The SINS programming language includes error handling to help identify problems that occur while a program is being processed or executed. Errors are separated into different categories so the user can pinpoint what went wrong more easily. Lexical errors occur when the lexer encounters an invalid character or improperly formatted input. For example, using an unsupported character such as @ produces a lexical error that will include the line and column where the problem occurred. Syntax errors occur when the parser finds code that does not follow the SINS language grammar. For example, omitting a required semicolon produces a syntax error indicating where the parser expects it. Runtime errors occur during program execution. These include problems such as using an undefined variable or function, providing the wrong number of function arguments, dividing by zero, or returning outside of a function. The interpreter and program runner handle these errors and display messages describing the problem, rather than allowing the program to fail without explanation. 

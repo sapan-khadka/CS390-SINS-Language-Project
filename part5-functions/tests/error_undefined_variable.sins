@@ -1,0 +1,3 @@
+let defined = 0;
+defined = defined + undefined;
+print(defined);

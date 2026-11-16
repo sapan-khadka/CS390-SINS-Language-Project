@@ -1,0 +1,10 @@
+let x = 'I will not be printed';
+
+func local() {
+    x = 'I am a global variable';
+    let x = 'I am a local variable';
+    print(x);
+}
+
+local();
+print(x);
